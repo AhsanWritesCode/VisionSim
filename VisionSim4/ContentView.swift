@@ -36,7 +36,7 @@ struct ImpairmentDetailView: View {
     var normalImages: [String] {
         switch impairment {
         case .macularDegeneration:
-            return ["md_scene_park", "md_scene_traffic", "md_scene_office"]
+            return ["md_scene_park", "md_scene_street", "md_scene_office"]
         case .glaucoma:
             return ["gl_scene_park", "gl_scene_traffic", "gl_scene_office"]
         case .cataracts:
@@ -47,7 +47,7 @@ struct ImpairmentDetailView: View {
     var impairedImages: [String] {
         switch impairment {
         case .macularDegeneration:
-            return ["md_scene_park_impaired", "md_scene_traffic_impaired", "md_scene_office_impaired"]
+            return ["md_scene_park_impaired", "md_scene_street_impaired", "md_scene_office_impaired"]
         case .glaucoma:
             return ["gl_scene_park_impaired", "gl_scene_traffic_impaired", "gl_scene_office_impaired"]
         case .cataracts:
