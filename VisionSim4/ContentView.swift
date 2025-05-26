@@ -28,14 +28,11 @@ struct ContentView: View {
 struct ImpairmentDetailView: View {
     let impairment: VisionImpairment
     @State private var showInfo = false
+    @State private var showNormalView = false
+    @State private var showImpairedView = false
 
     var body: some View {
         VStack(spacing: 20) {
-            // Placeholder for RealityKit or simulation content
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 30)
-                .frame(maxHeight: 300)
-
             Button(action: {
                 showInfo.toggle()
             }) {
@@ -46,6 +43,19 @@ struct ImpairmentDetailView: View {
                     .background(Color.blue.opacity(0.2))
                     .cornerRadius(8)
             }
+
+            Button(action: {
+                showNormalView.toggle()
+                showImpairedView.toggle()
+            }) {
+                Text("See Comparison")
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green.opacity(0.2))
+                    .cornerRadius(8)
+            }
+
             Spacer()
         }
         .padding()
@@ -53,8 +63,15 @@ struct ImpairmentDetailView: View {
         .sheet(isPresented: $showInfo) {
             InfoPanelView(impairment: impairment)
         }
+        .sheet(isPresented: $showNormalView) {
+            ComparisonPopupView(title: "Normal View", imageName: "normal_example")
+        }
+        .sheet(isPresented: $showImpairedView) {
+            ComparisonPopupView(title: "\(impairment.rawValue) View", imageName: "impaired_example")
+        }
     }
 }
+
 
 // Information panel view
 struct InfoPanelView: View {
