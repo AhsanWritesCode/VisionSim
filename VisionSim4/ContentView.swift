@@ -30,6 +30,30 @@ struct ImpairmentDetailView: View {
     @State private var showInfo = false
     @State private var showNormalView = false
     @State private var showImpairedView = false
+    @State private var currentImageIndex = 0
+
+
+    var normalImages: [String] {
+        switch impairment {
+        case .macularDegeneration:
+            return ["md_scene_park", "md_scene_traffic", "md_scene_office"]
+        case .glaucoma:
+            return ["gl_scene_park", "gl_scene_traffic", "gl_scene_office"]
+        case .cataracts:
+            return ["cat_scene_park", "cat_scene_traffic", "cat_scene_office"]
+        }
+    }
+
+    var impairedImages: [String] {
+        switch impairment {
+        case .macularDegeneration:
+            return ["md_scene_park_impaired", "md_scene_traffic_impaired", "md_scene_office_impaired"]
+        case .glaucoma:
+            return ["gl_scene_park_impaired", "gl_scene_traffic_impaired", "gl_scene_office_impaired"]
+        case .cataracts:
+            return ["cat_scene_park_impaired", "cat_scene_traffic_impaired", "cat_scene_office_impaired"]
+        }
+    }
 
     var body: some View {
         VStack(spacing: 20) {
@@ -48,7 +72,7 @@ struct ImpairmentDetailView: View {
                 showNormalView.toggle()
                 showImpairedView.toggle()
             }) {
-                Text("See Comparison")
+                Text("See Comparison Images")
                     .font(.headline)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -64,10 +88,20 @@ struct ImpairmentDetailView: View {
             InfoPanelView(impairment: impairment)
         }
         .sheet(isPresented: $showNormalView) {
-            ComparisonPopupView(title: "Normal View", imageName: "normal_example")
+            ComparisonPopupView(
+                title: "Normal View",
+                images: normalImages,
+                onClose: {
+                    showImpairedView = true
+                }
+            )
         }
         .sheet(isPresented: $showImpairedView) {
-            ComparisonPopupView(title: "\(impairment.rawValue) View", imageName: "impaired_example")
+            ComparisonPopupView(
+                title: "\(impairment.rawValue) View",
+                images: impairedImages,
+                onClose: nil
+            )
         }
     }
 }
