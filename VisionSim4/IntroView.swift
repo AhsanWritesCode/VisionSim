@@ -47,3 +47,7 @@ struct IntroView: View {
         .ignoresSafeArea()
     }
 }
+
+#Preview {
+    IntroView()
+}

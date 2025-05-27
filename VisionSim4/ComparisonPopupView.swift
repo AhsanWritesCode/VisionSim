@@ -11,50 +11,57 @@ struct ComparisonPopupView: View {
     let title: String
     let images: [String]
     let onClose: (() -> Void)?
-    
+
     @Environment(\.dismiss) private var dismiss
     @State private var currentIndex = 0
 
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Image(images[currentIndex])
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 300)
-                    .padding()
-
-                HStack {
-                    Button("Previous") {
-                        if currentIndex > 0 {
-                            currentIndex -= 1
-                        }
-                    }
-                    .disabled(currentIndex == 0)
-
-                    Spacer()
-
-                    Button("Next") {
-                        if currentIndex < images.count - 1 {
-                            currentIndex += 1
-                        }
-                    }
-                    .disabled(currentIndex == images.count - 1)
-                }
-                .padding(.horizontal)
+        VStack(spacing: 20) {
+            HStack {
+                Text(title)
+                    .font(.title2)
+                    .bold()
 
                 Spacer()
-            }
-            .padding()
-            .navigationTitle(title)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Close") {
-                        dismiss()
-                        onClose?()
-                    }
+
+                Button("Close") {
+                    dismiss()
+                    onClose?()
                 }
+                .padding(.horizontal)
             }
+
+            Image(images[currentIndex])
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: 400)
+                .cornerRadius(12)
+                .padding()
+
+            HStack {
+                Button("Previous") {
+                    if currentIndex > 0 { currentIndex -= 1 }
+                }
+                .disabled(currentIndex == 0)
+
+                Spacer()
+
+                Button("Next") {
+                    if currentIndex < images.count - 1 { currentIndex += 1 }
+                }
+                .disabled(currentIndex == images.count - 1)
+            }
+            .padding(.horizontal)
+
+            Spacer()
         }
+        .padding()
+        .frame(maxWidth: 700)
+        .background(.ultraThinMaterial)
+        .cornerRadius(24)
+        .ignoresSafeArea()
     }
 }
+
+
+

@@ -25,100 +25,63 @@ struct ContentView: View {
 }
 
 // Detail view showing information panel
-struct ImpairmentDetailView: View {
-    let impairment: VisionImpairment
-    @State private var showInfo = false
-    @State private var showNormalView = false
-    @State private var showImpairedView = false
-    @State private var currentImageIndex = 0
 
+
+struct ImpairmentDetailView: View {
+    
+    @Environment(\.openWindow) private var openWindow
+
+    let impairment: VisionImpairment
 
     var normalImages: [String] {
         switch impairment {
-        case .macularDegeneration:
-            return ["md_scene_park", "md_scene_street", "md_scene_office"]
-        case .glaucoma:
-            return ["gl_scene_park", "gl_scene_street", "gl_scene_office"]
-        case .cataracts:
-            return ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
+        case .macularDegeneration: return ["md_scene_park", "md_scene_street", "md_scene_office"]
+        case .glaucoma: return ["gl_scene_park", "gl_scene_street", "gl_scene_office"]
+        case .cataracts: return ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
         }
     }
 
     var impairedImages: [String] {
         switch impairment {
-        case .macularDegeneration:
-            return ["md_scene_park_impaired", "md_scene_street_impaired", "md_scene_office_impaired"]
-        case .glaucoma:
-            return ["gl_scene_park_impaired", "gl_scene_street_impaired", "gl_scene_office_impaired"]
-        case .cataracts:
-            return ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
+        case .macularDegeneration: return ["md_scene_park_impaired", "md_scene_street_impaired", "md_scene_office_impaired"]
+        case .glaucoma: return ["gl_scene_park_impaired", "gl_scene_street_impaired", "gl_scene_office_impaired"]
+        case .cataracts: return ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
         }
     }
 
     var body: some View {
         VStack(spacing: 20) {
-            Button(action: {
-                showInfo.toggle()
-            }) {
-                Text("Learn About \(impairment.rawValue)")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.thickMaterial) // changed from regularMaterial
-                    .cornerRadius(12)
+            Button("See Normal View") {
+                openWindow(id: "normalView")
             }
+            .buttonStyle(CustomButtonStyle())
 
-            Button(action: {
-                showNormalView.toggle()
-                showImpairedView.toggle()
-            }) {
-                Text("See Comparison Images")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.thickMaterial) // changed from regularMaterial
-                    .cornerRadius(12)
+            Button("See Impaired View") {
+                openWindow(id: "impairedView")
             }
+            .buttonStyle(CustomButtonStyle())
             
-            Button(action: {
-//                showExperience.toggle()
-            }) {
-                Text("Experience \(impairment.rawValue)")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.thickMaterial) // changed from regularMaterial
-                    .cornerRadius(12)
-            }
-
+            
             Spacer()
         }
         .padding()
         .navigationTitle(impairment.rawValue)
-        .sheet(isPresented: $showInfo) {
-            InfoPanelView(impairment: impairment)
-        }
-        .sheet(isPresented: $showNormalView) {
-            ComparisonPopupView(
-                title: "Normal View",
-                images: normalImages,
-                onClose: {
-                    showImpairedView = true
-                }
-            )
-        }
-        .sheet(isPresented: $showImpairedView) {
-            ComparisonPopupView(
-                title: "\(impairment.rawValue) View",
-                images: impairedImages,
-                onClose: nil
-            )
-        }
     }
 }
+
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color(white: 0.2))
+            .cornerRadius(12)
+            .foregroundColor(.white)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+    }
+}
+
 
 
 // Information panel view
@@ -156,5 +119,4 @@ struct InfoPanelView: View {
 
 #Preview {
     ContentView()
-    
 }
