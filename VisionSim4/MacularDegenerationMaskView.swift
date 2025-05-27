@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GlaucomaMaskView: View {
+struct MacularDegenerationMaskView: View {
     let imageName: String
     @Binding var blurRadius: CGFloat  // or blackout intensity
 

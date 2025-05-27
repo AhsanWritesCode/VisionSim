@@ -10,6 +10,7 @@ enum VisionImpairment: String, CaseIterable, Identifiable {
     case cataracts = "Cataracts"
 }
 
+
 // Main content view with navigation
 struct ContentView: View {
     var body: some View {
@@ -25,11 +26,9 @@ struct ContentView: View {
 }
 
 // Detail view showing information panel
-
-
 struct ImpairmentDetailView: View {
-    
     @Environment(\.openWindow) private var openWindow
+    @EnvironmentObject var appState: AppState
 
     let impairment: VisionImpairment
 
@@ -52,16 +51,24 @@ struct ImpairmentDetailView: View {
     var body: some View {
         VStack(spacing: 20) {
             Button("See Normal View") {
+                appState.selectedImpairment = impairment
                 openWindow(id: "normalView")
             }
             .buttonStyle(CustomButtonStyle())
 
             Button("See Impaired View") {
+                appState.selectedImpairment = impairment
                 openWindow(id: "impairedView")
             }
             .buttonStyle(CustomButtonStyle())
-            
-            
+
+            if impairment == .macularDegeneration {
+                Button("Experience Macular Degeneration") {
+                    openWindow(id: "macularDegenerationExperience")
+                }
+                .buttonStyle(CustomButtonStyle())
+            }
+
             Spacer()
         }
         .padding()
@@ -82,8 +89,6 @@ struct CustomButtonStyle: ButtonStyle {
     }
 }
 
-
-
 // Information panel view
 struct InfoPanelView: View {
     let impairment: VisionImpairment
@@ -97,7 +102,6 @@ struct InfoPanelView: View {
                         .font(.title)
                         .bold()
 
-                    // Placeholder text; replace with real content
                     Text("Detailed information about \(impairment.rawValue) goes here. You can describe symptoms, causes, and how the simulation approximates the effect.")
                         .font(.body)
 
@@ -118,5 +122,5 @@ struct InfoPanelView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView().environmentObject(AppState())
 }
