@@ -18,9 +18,6 @@ struct ComparisonPopupView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                Text(title)
-                    .font(.title2)
-
                 Image(images[currentIndex])
                     .resizable()
                     .scaledToFit()
