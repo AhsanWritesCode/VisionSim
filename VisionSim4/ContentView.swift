@@ -62,10 +62,11 @@ struct ImpairmentDetailView: View {
             }) {
                 Text("Learn About \(impairment.rawValue)")
                     .font(.headline)
+                    .foregroundColor(.primary)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.blue.opacity(0.2))
-                    .cornerRadius(8)
+                    .background(.thickMaterial) // changed from regularMaterial
+                    .cornerRadius(12)
             }
 
             Button(action: {
@@ -74,10 +75,23 @@ struct ImpairmentDetailView: View {
             }) {
                 Text("See Comparison Images")
                     .font(.headline)
+                    .foregroundColor(.primary)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.green.opacity(0.2))
-                    .cornerRadius(8)
+                    .background(.thickMaterial) // changed from regularMaterial
+                    .cornerRadius(12)
+            }
+            
+            Button(action: {
+//                showExperience.toggle()
+            }) {
+                Text("Experience \(impairment.rawValue)")
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(.thickMaterial) // changed from regularMaterial
+                    .cornerRadius(12)
             }
 
             Spacer()
@@ -142,4 +156,5 @@ struct InfoPanelView: View {
 
 #Preview {
     ContentView()
+    
 }

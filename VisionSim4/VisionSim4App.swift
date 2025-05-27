@@ -11,7 +11,19 @@ import SwiftUI
 struct VisionSim4App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                IntroView()
+                    .tabItem {
+                        Label("Intro", systemImage: "info.circle")
+                    }
+
+                NavigationView {
+                    ContentView()
+                }
+                .tabItem {
+                    Label("Impairments", systemImage: "eye")
+                }
+            }
         }
     }
 }
