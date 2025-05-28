@@ -13,25 +13,24 @@ struct MacularDegenerationMaskView: View {
 
     var body: some View {
         ZStack {
-            // Base image
+            // Original image
             Image(imageName)
                 .resizable()
                 .scaledToFit()
 
-            // Blurred version of the image, masked to center
+            // Blurred version masked from center outward
             Image(imageName)
                 .resizable()
                 .scaledToFit()
-                .blur(radius: blurRadius)
+                .blur(radius: blurRadius / 5) // adjust strength
                 .mask(
                     RadialGradient(
-                        gradient: Gradient(colors: [.black, .clear]),
+                        gradient: Gradient(colors: [.black, .black, .black.opacity(0.9), .black.opacity(0.3), .clear]),
                         center: .center,
                         startRadius: 0,
-                        endRadius: 300
+                        endRadius: blurRadius * 3
                     )
                 )
-                .allowsHitTesting(false)
         }
         .clipped()
     }
