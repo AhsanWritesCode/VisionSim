@@ -62,6 +62,14 @@ struct ImpairmentDetailView: View {
                 }
                 .buttonStyle(CustomButtonStyle())
             }
+            
+            if impairment == .cataracts {
+                Button("Experience Cataracts") {
+                    openWindow(id: "cataractsExperience")
+                }
+                .buttonStyle(CustomButtonStyle())
+            }
+
 
 
             Spacer()

@@ -25,6 +25,12 @@ struct VisionSim4App: App {
             }
             .environmentObject(appState) // <- inject here
         }
+        
+        
+        WindowGroup(id: "infoPanel") {
+            InfoPanelViewWrapper()
+            .environmentObject(appState)
+        }
 
         WindowGroup(id: "normalView") {
             ComparisonPopupView(
@@ -47,14 +53,15 @@ struct VisionSim4App: App {
         WindowGroup(id: "macularDegenerationExperience") {
             MacularDegenerationExperienceView(imageName: "md_scene_park")
         }
-        
-        WindowGroup(id: "infoPanel") {
-            InfoPanelViewWrapper()
-            .environmentObject(appState)
-        }
+
         
         WindowGroup(id: "glaucomaExperience") {
             GlaucomaExperienceView(imageName: "gl_scene_park") // or whatever default image
+                .environmentObject(appState)
+        }
+        
+        WindowGroup(id: "cataractsExperience") {
+            CataractsExperienceView(imageName: "cat_scene_park")
                 .environmentObject(appState)
         }
 
