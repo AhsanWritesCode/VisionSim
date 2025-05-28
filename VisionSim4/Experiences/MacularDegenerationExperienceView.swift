@@ -1,5 +1,5 @@
 //
-//  GlaucomaExperienceView.swift
+//  MacularDegenerationExperienceView.swift
 //  VisionSim4
 //
 //  Created by Ahsan Tariq on 2025-05-27.

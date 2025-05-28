@@ -52,6 +52,12 @@ struct VisionSim4App: App {
             InfoPanelViewWrapper()
             .environmentObject(appState)
         }
+        
+        WindowGroup(id: "glaucomaExperience") {
+            GlaucomaExperienceView(imageName: "gl_scene_park") // or whatever default image
+                .environmentObject(appState)
+        }
+
     }
 
 
