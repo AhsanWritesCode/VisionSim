@@ -5,8 +5,6 @@
 //  Created by Ahsan Tariq on 2025-05-27.
 //
 
-// Detail view showing information panel
-
 import SwiftUI
 
 struct ImpairmentDetailView: View {
@@ -33,6 +31,12 @@ struct ImpairmentDetailView: View {
 
     var body: some View {
         VStack(spacing: 20) {
+            Button("Learn About \(impairment.rawValue)") {
+                appState.selectedImpairment = impairment
+                openWindow(id: "infoPanel")
+            }
+            .buttonStyle(CustomButtonStyle())
+
             Button("See Normal View") {
                 appState.selectedImpairment = impairment
                 openWindow(id: "normalView")

@@ -7,33 +7,42 @@
 
 import SwiftUI
 
-// Information panel view
 struct InfoPanelView: View {
     let impairment: VisionImpairment
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 15) {
-                    Text(impairment.rawValue)
-                        .font(.title)
+        ZStack {
+            VStack {
+                Spacer()
+
+                VStack(spacing: 25) {
+                    Text("About \(impairment.rawValue)")
+                        .font(.title2)
                         .bold()
+                        .multilineTextAlignment(.center)
 
-                    Text("Detailed information about \(impairment.rawValue) goes here. You can describe symptoms, causes, and how the simulation approximates the effect.")
+                    Text("""
+                        Detailed information about \(impairment.rawValue) goes here. You can describe the symptoms, causes, and how the simulation approximates the effect.
+                        """)
                         .font(.body)
-
-                    Spacer()
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 450)
                 }
-                .padding()
+
+                Spacer()
             }
-            .navigationTitle("About")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
+            .padding()
+
+            VStack {
+                HStack {
+                    Spacer()
                     Button("Done") {
                         dismiss()
                     }
+                    .padding()
                 }
+                Spacer()
             }
         }
     }

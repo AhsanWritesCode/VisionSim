@@ -47,8 +47,16 @@ struct VisionSim4App: App {
         WindowGroup(id: "macularDegenerationExperience") {
             MacularDegenerationExperienceView(imageName: "md_scene_park")
         }
+        
+        WindowGroup(id: "infoPanel") {
+            InfoPanelViewWrapper()
+            .environmentObject(appState)
+        }
     }
 
+
+
+    
     func imageSet(for impairment: VisionImpairment, impaired: Bool) -> [String] {
         switch impairment {
         case .macularDegeneration:

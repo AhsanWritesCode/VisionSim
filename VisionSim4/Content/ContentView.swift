@@ -10,7 +10,6 @@ enum VisionImpairment: String, CaseIterable, Identifiable {
     case cataracts = "Cataracts"
 }
 
-
 // Main content view with navigation
 struct ContentView: View {
     var body: some View {
@@ -24,11 +23,6 @@ struct ContentView: View {
         }
     }
 }
-
-
-
-
-
 
 #Preview {
     ContentView().environmentObject(AppState())
