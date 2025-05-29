@@ -64,8 +64,16 @@ struct VisionSim4App: App {
             CataractsExperienceView(imageName: "cat_scene_park")
                 .environmentObject(appState)
         }
+        
+        ImmersiveSpace(id: "glaucomaImmersiveExperience") {
+            GlaucomaImmersiveView()
+        }
+        .immersionStyle(selection: .constant(.full), in: .full)
+
 
     }
+    
+    
 
 
 

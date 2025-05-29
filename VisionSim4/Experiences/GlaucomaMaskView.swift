@@ -22,7 +22,7 @@ struct GlaucomaMaskView: View {
                 gradient: Gradient(colors: [.clear, .black]),
                 center: .center,
                 startRadius: 0,
-                endRadius: 300 * (1 - intensity + 0.1)  // smaller endRadius = more tunnel vision
+                endRadius: 350 * (1 - intensity + 0.1)  // smaller endRadius = more tunnel vision
             )
             .blendMode(.multiply)
             .allowsHitTesting(false)

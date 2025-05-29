@@ -9,9 +9,14 @@ import SwiftUI
 
 struct ImpairmentDetailView: View {
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @EnvironmentObject var appState: AppState
 
     let impairment: VisionImpairment
+
+    @State private var showExperienceInstructions = false
+    @State private var experienceWindowToOpen: String?
+    @State private var isImmersiveExperience = false
 
     var normalImages: [String] {
         switch impairment {
@@ -51,30 +56,65 @@ struct ImpairmentDetailView: View {
 
             if impairment == .macularDegeneration {
                 Button("Experience Macular Degeneration") {
-                    openWindow(id: "macularDegenerationExperience")
+                    experienceWindowToOpen = "macularDegenerationExperience"
+                    showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())
             }
-            
+
             if impairment == .glaucoma {
                 Button("Experience Glaucoma") {
-                    openWindow(id: "glaucomaExperience")
+                    experienceWindowToOpen = "glaucomaExperience"
+                    showExperienceInstructions = true
+                }
+                .buttonStyle(CustomButtonStyle())
+
+                Button("Start Immersive Glaucoma Experience") {
+                    isImmersiveExperience = true
+                    showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())
             }
-            
+
             if impairment == .cataracts {
                 Button("Experience Cataracts") {
-                    openWindow(id: "cataractsExperience")
+                    experienceWindowToOpen = "cataractsExperience"
+                    showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())
             }
-
-
 
             Spacer()
         }
         .padding()
         .navigationTitle(impairment.rawValue)
+        .sheet(isPresented: $showExperienceInstructions) {
+            VStack(spacing: 20) {
+                Text("How to Use the Simulator")
+                    .font(.title2)
+                    .bold()
+
+                Text("Use the slider to increase the intensity of the impairment and observe how vision is affected.")
+                    .multilineTextAlignment(.center)
+                    .padding()
+
+                Button("Start Experience") {
+                    showExperienceInstructions = false
+                    appState.selectedImpairment = impairment
+
+                    if isImmersiveExperience {
+                        Task {
+                            await openImmersiveSpace(id: "glaucomaImmersiveExperience")
+                            isImmersiveExperience = false
+                        }
+                    } else if let windowId = experienceWindowToOpen {
+                        openWindow(id: windowId)
+                    }
+                }
+                .buttonStyle(CustomButtonStyle())
+            }
+            .padding()
+            .presentationDetents([.medium])
+        }
     }
 }
