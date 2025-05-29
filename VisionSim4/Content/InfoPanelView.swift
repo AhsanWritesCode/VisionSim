@@ -23,7 +23,7 @@ struct InfoPanelView: View {
                         .multilineTextAlignment(.center)
 
                     Text("""
-                        Detailed information about \(impairment.rawValue) goes here. You can describe the symptoms, causes, and how the simulation approximates the effect.
+                        Detailed information about \(impairment.rawValue) goes here.
                         """)
                         .font(.body)
                         .multilineTextAlignment(.center)

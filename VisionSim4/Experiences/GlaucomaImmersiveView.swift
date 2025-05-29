@@ -14,32 +14,32 @@ import RealityKitContent
 
 struct GlaucomaImmersiveView: View {
     @Environment(\.dismissImmersiveSpace) var dismiss
-    @State private var intensity: CGFloat = 0.5
 
     var body: some View {
         ZStack {
-            // Clear center, black vignette peripheral mask
+            // Optional background (e.g., real-world camera or placeholder)
+            RealityView { _ in }
+
+            // Black vignette mask with clear center
             Color.black
                 .mask(
                     RadialGradient(
                         gradient: Gradient(stops: [
-                            .init(color: .clear, location: 0.5),
-
+                            .init(color: .clear, location: 0.0),
+                            .init(color: .clear, location: 0.3), // center stays clear
+                            .init(color: .black, location: 1.0)  // black edges
                         ]),
                         center: .center,
                         startRadius: 0,
-                        endRadius: 600
+                        endRadius: 800
                     )
                 )
                 .blendMode(.multiply)
                 .ignoresSafeArea()
 
-
-
+            // Exit Button
             VStack {
-                Slider(value: $intensity, in: 0...1)
-                    .padding()
-
+                Spacer()
                 Button("Exit") {
                     Task {
                         await dismiss()

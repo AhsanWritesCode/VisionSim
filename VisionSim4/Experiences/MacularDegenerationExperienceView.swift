@@ -7,33 +7,70 @@
 
 import SwiftUI
 
+
 struct MacularDegenerationExperienceView: View {
-    @State private var intensity: CGFloat = 0.0
-    let imageName: String
+    // drive how strong central blur is
+    @State private var blurAmount: CGFloat = 0
+    
+
+    var imageName: String = "md_scene_park"
+
+    // to dismiss the window
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Macular Degeneration Simulation")
-                .font(.title)
+        ZStack {
+            // 1) Base image
+            Image(imageName)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
 
+            // 2) Blurred overlay masked to the center
+            Image(imageName)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .blur(radius: blurAmount)
+                .mask(
+                    RadialGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: .white, location: 0),
+                            .init(color: .white, location: 0.4),
+                            .init(color: .clear, location: 1)
+                        ]),
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: 400
+                    )
+                )
+                .allowsHitTesting(false)
 
-            MacularDegenerationMaskView(imageName: imageName, blurRadius: $intensity)
-                .frame(height: 400)
-                .cornerRadius(12)
+            // 3) Slider + Exit UI
+            VStack {
+                Spacer()
+                Slider(value: $blurAmount, in: 0...80) {
+                    Text("Intensity")
+                }
                 .padding()
+                .background(.ultraThinMaterial)
+                .cornerRadius(8)
+                .frame(maxWidth: 400)
 
-
-            Slider(value: $intensity, in: 0...250) {
-                Text("Intensity")
+                Button("Exit") {
+                    dismiss()
+                }
+                .padding(.top, 8)
             }
-            .padding()
-
-            Text("Central vision loss: \(Int(intensity / 2.5))%")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-
-            Spacer()
+            .padding(.bottom, 30)
         }
-        .padding()
     }
 }
+
+#if DEBUG
+struct MacularDegenerationExperienceView_Previews: PreviewProvider {
+    static var previews: some View {
+        MacularDegenerationExperienceView()
+    }
+}
+#endif
