@@ -56,18 +56,18 @@ struct VisionSim4App: App {
 
         
         WindowGroup(id: "glaucomaExperience") {
-            GlaucomaExperienceView(imageName: "gl_scene_park") // or whatever default image
+            ImmersiveGlaucomaView(imageName: "gl_scene_park") // or whatever default image
                 .environmentObject(appState)
         }
         
         WindowGroup(id: "cataractsExperience") {
-            CataractsExperienceView(imageName: "cat_scene_park")
+            ImmersiveCataractsView(imageName: "cat_scene_park")
                 .environmentObject(appState)
         }
         
-        ImmersiveSpace(id: "glaucomaImmersiveExperience") {
-            GlaucomaImmersiveView()
-        }
+//        ImmersiveSpace(id: "glaucomaImmersiveExperience") {
+//            GlaucomaImmersiveView()
+//        }
         .immersionStyle(selection: .constant(.full), in: .full)
 
 

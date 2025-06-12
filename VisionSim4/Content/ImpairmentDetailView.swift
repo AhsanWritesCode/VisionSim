@@ -69,11 +69,11 @@ struct ImpairmentDetailView: View {
                 }
                 .buttonStyle(CustomButtonStyle())
 
-                Button("Start Immersive Glaucoma Experience") {
-                    isImmersiveExperience = true
-                    showExperienceInstructions = true
-                }
-                .buttonStyle(CustomButtonStyle())
+//                Button("Start Immersive Glaucoma Experience") {
+//                    isImmersiveExperience = true
+//                    showExperienceInstructions = true
+//                }
+//                .buttonStyle(CustomButtonStyle())
             }
 
             if impairment == .cataracts {
