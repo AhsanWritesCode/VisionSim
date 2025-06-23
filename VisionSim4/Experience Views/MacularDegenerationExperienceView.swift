@@ -12,39 +12,39 @@ struct MacularDegenerationExperienceView: View {
     @State private var blurAmount: CGFloat = 0
     
     // The name of the background image
-    var imageName: String = "md_scene_park"
+//    var imageName: String = "md_scene_park"
 
     var body: some View {
         ZStack {
             // -------------------------------------------------------
             // 1) Base image
             // -------------------------------------------------------
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+//            Image(imageName)
+//                .resizable()
+//                .scaledToFill()
+//                .ignoresSafeArea()
 
             // -------------------------------------------------------
             // 2) Blurred overlay masked to the center
             // -------------------------------------------------------
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .blur(radius: blurAmount)
-                .mask(
-                    RadialGradient(
-                        gradient: Gradient(stops: [
-                            .init(color: .white, location: 0.0),
-                            .init(color: .white, location: 0.4),
-                            .init(color: .clear, location: 1.0)
-                        ]),
-                        center: .center,
-                        startRadius: 0,
-                        endRadius: 400
-                    )
-                )
-                .allowsHitTesting(false)
+//            Image(imageName)
+//                .resizable()
+//                .scaledToFill()
+//                .ignoresSafeArea()
+//                .blur(radius: blurAmount)
+//                .mask(
+//                    RadialGradient(
+//                        gradient: Gradient(stops: [
+//                            .init(color: .white, location: 0.0),
+//                            .init(color: .white, location: 0.4),
+//                            .init(color: .clear, location: 1.0)
+//                        ]),
+//                        center: .center,
+//                        startRadius: 0,
+//                        endRadius: 400
+//                    )
+//                )
+//                .allowsHitTesting(false)
 
             // -------------------------------------------------------
             // 3) Slider + percentage label
@@ -61,6 +61,18 @@ struct MacularDegenerationExperienceView: View {
                 .background(.ultraThinMaterial)
                 .cornerRadius(8)
                 .frame(maxWidth: 400)
+                .mask(
+                    RadialGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: .white, location: 0.0),
+                            .init(color: .white, location: 0.4),
+                            .init(color: .clear, location: 1.0)
+                        ]),
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: 400
+                    )
+                )
 
                 
                 

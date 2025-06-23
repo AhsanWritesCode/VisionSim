@@ -30,7 +30,6 @@
 		DC664BAA2DD68C80009486F7 /* Exceptions for "VisionSim4" folder in "VisionSim4" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Experiences/Untitled.swift,
 				Info.plist,
 			);
 			target = DC664B912DD68C7F009486F7 /* VisionSim4 */;

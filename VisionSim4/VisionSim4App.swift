@@ -28,8 +28,8 @@ struct VisionSim4App: App {
         
         
         WindowGroup(id: "infoPanel") {
-            InfoPanelViewWrapper()
-            .environmentObject(appState)
+            InfoPanelView(impairment: appState.selectedImpairment)
+              .environmentObject(appState)
         }
 
         WindowGroup(id: "normalView") {
@@ -51,9 +51,9 @@ struct VisionSim4App: App {
         }
 
         WindowGroup(id: "macularDegenerationExperience") {
-            MacularDegenerationExperienceView(imageName: "md_scene_park")
+            MacularDegenerationExperienceView()
         }
-
+//        .windowStyle(.automatic )
         
         WindowGroup(id: "glaucomaExperience") {
             ImmersiveGlaucomaView(imageName: "gl_scene_park") // or whatever default image

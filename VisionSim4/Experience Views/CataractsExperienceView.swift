@@ -52,10 +52,10 @@ struct ImmersiveCataractsView: View {
                     .padding(.top, 8)
                     .padding(.bottom, 8)
 
-//                Button("Exit") {
-//                    dismiss()
-//                }
-//                .padding(.top, 8)
+                Button("Exit") {
+                    dismiss()
+                }
+                .padding(.top, 8)
             }
             .padding(.bottom, 75)
         }
