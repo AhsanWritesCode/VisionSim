@@ -21,6 +21,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC04B4972E0A275E006173D8 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 		DC664B922DD68C7F009486F7 /* VisionSim4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionSim4.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC664B962DD68C7F009486F7 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		DC664BA42DD68C80009486F7 /* VisionSim4Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisionSim4Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,12 +72,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC04B4962E0A275E006173D8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DC04B4972E0A275E006173D8 /* RealityKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DC664B892DD68C7F009486F7 = {
 			isa = PBXGroup;
 			children = (
 				DC664B942DD68C7F009486F7 /* VisionSim4 */,
 				DC664B952DD68C7F009486F7 /* Packages */,
 				DC664BA72DD68C80009486F7 /* VisionSim4Tests */,
+				DC04B4962E0A275E006173D8 /* Frameworks */,
 				DC664B932DD68C7F009486F7 /* Products */,
 			);
 			sourceTree = "<group>";

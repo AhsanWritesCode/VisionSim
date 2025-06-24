@@ -1,15 +1,15 @@
+// Glaucoma Interactive View
+
 import SwiftUI
 
-struct ImmersiveGlaucomaView: View {
+struct GlaucomaInteractiveView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var intensity: CGFloat = 0.0   // 0 = no blackout, 1 = full blackout
     let imageName: String                         // e.g. "gl_scene_park"
 
     var body: some View {
         ZStack {
-            // -------------------------------------------------------
-            // 1) BACKGROUND: full-screen image (or RealityView)
-            // -------------------------------------------------------
+            // Base image
             Image(imageName)
                 .resizable()
                 .scaledToFill()

@@ -1,8 +1,4 @@
-//
-//  VisionSim4App.swift
-//  VisionSim4
-//
-//  Created by Ahsan Tariq on 2025-05-15.
+// Vision Impairment Simulator
 
 import SwiftUI
 
@@ -51,17 +47,19 @@ struct VisionSim4App: App {
         }
 
         WindowGroup(id: "macularDegenerationExperience") {
-            MacularDegenerationExperienceView()
+            MacularDegenerationInteractiveView(imageName: "gl_scene_park") // or whatever default image
+                .environmentObject(appState)
+
         }
 //        .windowStyle(.automatic )
         
         WindowGroup(id: "glaucomaExperience") {
-            ImmersiveGlaucomaView(imageName: "gl_scene_park") // or whatever default image
+            GlaucomaInteractiveView(imageName: "gl_scene_park") // or whatever default image
                 .environmentObject(appState)
         }
         
         WindowGroup(id: "cataractsExperience") {
-            ImmersiveCataractsView(imageName: "cat_scene_park")
+            CataractsInteractiveView(imageName: "cat_scene_park")
                 .environmentObject(appState)
         }
         
