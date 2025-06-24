@@ -15,9 +15,7 @@ struct GlaucomaInteractiveView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
 
-            // -------------------------------------------------------
-            // 2) SOFT-EDGED MASK: radial gradient with a fade zone
-            // -------------------------------------------------------
+            // Vignette effect
             GeometryReader { geo in
                 // Compute maximum radius (half the diagonal)
                 let maxRadius = hypot(geo.size.width, geo.size.height) / 2
@@ -60,13 +58,11 @@ struct GlaucomaInteractiveView: View {
                     .blendMode(.multiply)
             }
 
-            // -------------------------------------------------------
-            // 3) UI CONTROLS: slider + exit at the bottom
-            // -------------------------------------------------------
+            // UI elements
             VStack {
                 Spacer()
 
-                // Slider to control tunnel intensity (0…1)
+                // Slider to control the intensity of the glaucoma effect
                 Slider(value: $intensity, in: 0...1) {
                     Text("Peripheral Vision Loss")
                 }
@@ -75,7 +71,7 @@ struct GlaucomaInteractiveView: View {
                 .cornerRadius(8)
                 .frame(maxWidth: 400)
 
-                // Text feedback
+                // Text describing the current intensity of the effect
                 Text("Peripheral vision loss: \(Int(intensity * 100))%")
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.85))
@@ -92,10 +88,4 @@ struct GlaucomaInteractiveView: View {
     }
 }
 
-#if DEBUG
-struct ImmersiveGlaucomaView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImmersiveGlaucomaView(imageName: "gl_scene_park")
-    }
-}
-#endif
+

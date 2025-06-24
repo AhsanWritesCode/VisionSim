@@ -17,9 +17,8 @@ struct MacularDegenerationInteractiveView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
 
-//             -------------------------------------------------------
-//             2) Blurred overlay masked to the center
-//             -------------------------------------------------------
+
+            // Blurred overlay masked to the center of the image
             Image(imageName)
                 .resizable()
                 .scaledToFill()
@@ -78,3 +77,6 @@ struct MacularDegenerationInteractiveView: View {
         }
     }
 }
+
+
+
