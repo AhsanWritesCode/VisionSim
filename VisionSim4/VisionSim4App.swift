@@ -14,6 +14,11 @@ struct VisionSim4App: App {
                         Label("Intro", systemImage: "info.circle")
                     }
 
+                GuidedWalkthroughView()
+                    .tabItem {
+                        Label("Walkthrough", systemImage: "book")
+                    }
+                
                 ContentView()
                     .tabItem {
                         Label("Impairments", systemImage: "eye")

@@ -44,10 +44,10 @@ struct CataractsInteractiveView: View {
                     .padding(.bottom, 8)
 
                 // "Exit" button to leave the view
-                Button("Exit") {
-                    dismiss()
-                }
-                .padding(.top, 8)
+//                Button("Exit") {
+//                    dismiss()
+//                }
+//                .padding(.top, 8)
             }
             .padding(.bottom, 75)
         }
