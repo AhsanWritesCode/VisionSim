@@ -87,5 +87,3 @@ struct GlaucomaInteractiveView: View {
         }
     }
 }
-
-

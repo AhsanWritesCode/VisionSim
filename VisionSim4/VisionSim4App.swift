@@ -1,4 +1,4 @@
-// Vision Impairment Simulator
+// VisionSim4App
 
 import SwiftUI
 
@@ -21,7 +21,6 @@ struct VisionSim4App: App {
             }
             .environmentObject(appState) // <- inject here
         }
-        
         
         WindowGroup(id: "infoPanel") {
             InfoPanelView(impairment: appState.selectedImpairment)
@@ -67,14 +66,8 @@ struct VisionSim4App: App {
 //            GlaucomaImmersiveView()
 //        }
         .immersionStyle(selection: .constant(.full), in: .full)
-
-
+        
     }
-    
-    
-
-
-
     
     func imageSet(for impairment: VisionImpairment, impaired: Bool) -> [String] {
         switch impairment {

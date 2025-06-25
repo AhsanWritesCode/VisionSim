@@ -1,10 +1,4 @@
-//
-//  ComparisonPopupView.swift
-//  VisionSim4
-//
-//  Created by Ahsan Tariq on 2025-05-26.
-//  Updated: “Previous”/“Next” on left/right edges.
-//
+// Comparison Popup View
 
 import SwiftUI
 
@@ -110,18 +104,3 @@ struct ComparisonPopupView: View {
         }
     }
 }
-
-#if DEBUG
-struct ComparisonPopupView_Previews: PreviewProvider {
-    static var previews: some View {
-        ComparisonPopupView(
-            title: "Normal View",
-            images: ["scene_park", "scene_traffic", "scene_office"],
-            onClose: { print("closed") }
-        )
-    }
-}
-#endif
-
-
-

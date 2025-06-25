@@ -1,9 +1,4 @@
-//
-//  CustomButtonStyle.swift
-//  VisionSim4
-//
-//  Created by Ahsan Tariq on 2025-05-27.
-//
+// Custom Button Style
 
 import SwiftUI
 

@@ -1,8 +1,9 @@
+// Intro View
+
 import SwiftUI
 
-/// The initial "About the App" screen shown under the Intro tab.
-/// Uses a scrollable and centered layout to present descriptive text,
-/// creator, supervisor, and funding information.
+// The initial "About the App" screen shown under the Intro tab.
+// Uses a scrollable and centered layout to present descriptive text, creator, supervisor, and funding information.
 struct IntroView: View {
     var body: some View {
         // Use GeometryReader to gain access to the full size of the parent container.
@@ -63,8 +64,4 @@ struct IntroView: View {
         // Let the material fill the entire safe area (even behind the notch/menu)
         .ignoresSafeArea()
     }
-}
-
-#Preview {
-    IntroView()
 }

@@ -77,6 +77,3 @@ struct MacularDegenerationInteractiveView: View {
         }
     }
 }
-
-
-
