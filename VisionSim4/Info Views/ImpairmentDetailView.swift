@@ -55,30 +55,24 @@ struct ImpairmentDetailView: View {
             .buttonStyle(CustomButtonStyle())
 
             if impairment == .macularDegeneration {
-                Button("Experience Macular Degeneration") {
-                    experienceWindowToOpen = "macularDegenerationExperience"
+                Button("Interactive Macular Degeneration Visualization") {
+                    experienceWindowToOpen = "macularDegenerationInteractive"
                     showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())
             }
 
             if impairment == .glaucoma {
-                Button("Experience Glaucoma") {
-                    experienceWindowToOpen = "glaucomaExperience"
+                Button("Interactive Glaucoma Visualization") {
+                    experienceWindowToOpen = "glaucomaInteractive"
                     showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())
-
-//                Button("Start Immersive Glaucoma Experience") {
-//                    isImmersiveExperience = true
-//                    showExperienceInstructions = true
-//                }
-//                .buttonStyle(CustomButtonStyle())
             }
 
             if impairment == .cataracts {
-                Button("Experience Cataracts") {
-                    experienceWindowToOpen = "cataractsExperience"
+                Button("Interactive Cataracts Visualization") {
+                    experienceWindowToOpen = "cataractsInteractive"
                     showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())

@@ -18,9 +18,7 @@ struct ComparisonPopupView: View {
 
     var body: some View {
         ZStack {
-            // -------------------------------------------------------
-            // 1) BACKGROUND: Full-screen image
-            // -------------------------------------------------------
+            // Full screen image
             Group {
                 if images.indices.contains(currentIndex) {
                     Image(images[currentIndex])
@@ -33,10 +31,10 @@ struct ComparisonPopupView: View {
                 }
             }
             .ignoresSafeArea()
+            
+            // UI elements:
 
-            // -------------------------------------------------------
-            // 2) TOP BAR: Title + “Close” button
-            // -------------------------------------------------------
+            // Title + Close button
             VStack(spacing: 0) {
                 HStack {
                     Text(title)
@@ -68,9 +66,7 @@ struct ComparisonPopupView: View {
                 Spacer()
             }
 
-            // -------------------------------------------------------
-            // 3) LEFT / RIGHT ARROW BUTTONS
-            // -------------------------------------------------------
+            // Left / Right arrows
             HStack {
                 // Left (Previous) button
                 Button {
@@ -80,7 +76,6 @@ struct ComparisonPopupView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 30, weight: .semibold))
-                        .foregroundColor(currentIndex > 0 ? Color.white : Color.gray.opacity(0.6))
                         .padding(20)
                         .background(
                             Color.black.opacity(currentIndex > 0 ? 0.5 : 0.2)
@@ -127,3 +122,6 @@ struct ComparisonPopupView_Previews: PreviewProvider {
     }
 }
 #endif
+
+
+

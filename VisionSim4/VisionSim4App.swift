@@ -46,19 +46,19 @@ struct VisionSim4App: App {
             .environmentObject(appState)
         }
 
-        WindowGroup(id: "macularDegenerationExperience") {
+        WindowGroup(id: "macularDegenerationInteractive") {
             MacularDegenerationInteractiveView(imageName: "gl_scene_park") // or whatever default image
                 .environmentObject(appState)
 
         }
 //        .windowStyle(.automatic )
         
-        WindowGroup(id: "glaucomaExperience") {
+        WindowGroup(id: "glaucomaInteractive") {
             GlaucomaInteractiveView(imageName: "gl_scene_park") // or whatever default image
                 .environmentObject(appState)
         }
         
-        WindowGroup(id: "cataractsExperience") {
+        WindowGroup(id: "cataractsInteractive") {
             CataractsInteractiveView(imageName: "cat_scene_park")
                 .environmentObject(appState)
         }
