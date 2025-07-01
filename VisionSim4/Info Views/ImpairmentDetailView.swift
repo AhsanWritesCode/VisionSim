@@ -18,6 +18,7 @@ struct ImpairmentDetailView: View {
         case .macularDegeneration: return ["md_scene_park", "md_scene_street", "md_scene_office"]
         case .glaucoma: return ["gl_scene_park", "gl_scene_street", "gl_scene_office"]
         case .cataracts: return ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
+        case .diabeticRetinopathy: return ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
         }
     }
 
@@ -26,6 +27,7 @@ struct ImpairmentDetailView: View {
         case .macularDegeneration: return ["md_scene_park_impaired", "md_scene_street_impaired", "md_scene_office_impaired"]
         case .glaucoma: return ["gl_scene_park_impaired", "gl_scene_street_impaired", "gl_scene_office_impaired"]
         case .cataracts: return ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
+        case .diabeticRetinopathy: return ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
         }
     }
 
@@ -68,6 +70,14 @@ struct ImpairmentDetailView: View {
             if impairment == .cataracts {
                 Button("Interactive Cataracts Visualization") {
                     experienceWindowToOpen = "cataractsInteractive"
+                    showExperienceInstructions = true
+                }
+                .buttonStyle(CustomButtonStyle())
+            }
+            
+            if impairment == .diabeticRetinopathy {
+                Button("Interactive Diabetic Retinopathy Visualization") {
+                    experienceWindowToOpen = "diabeticRetinopathyInteractive"
                     showExperienceInstructions = true
                 }
                 .buttonStyle(CustomButtonStyle())

@@ -49,6 +49,9 @@ struct WalkthroughStepView: View {
                                     case .macularDegeneration:
                                         MacularDegenerationInteractiveView(imageName: "md_scene_park")
                                             .frame(width: geo.size.width, height: geo.size.height)
+                                    case .diabeticRetinopathy:
+                                        DiabeticRetinopathyInteractiveView(imageName: "md_scene_park")
+                                            .frame(width: geo.size.width, height: geo.size.height)
                                     }
                                 }
                             }

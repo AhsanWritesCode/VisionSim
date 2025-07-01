@@ -37,6 +37,8 @@ struct InfoPanelView: View {
                                         Text("Cataracts occur when the lens of the eye becomes cloudy, leading to blurred vision, faded colors, and difficulty seeing at night. Surgery is often required to restore vision.")
                                     case .macularDegeneration:
                                         Text("Macular degeneration is a disease that affects the central part of the retina, causing central vision loss. It primarily impacts older adults and can be dry or wet in form.")
+                                    case .diabeticRetinopathy:
+                                        Text("Diabetic retinopathy is a complication of diabetes that affects the eyes. It is caused by damage to the blood vessels of the retina and can lead to vision loss if untreated.")
                                     }
                                 }
 
@@ -50,6 +52,8 @@ struct InfoPanelView: View {
                                         Text("Cloudy or blurry vision, faded colors, glare or halos around lights, poor night vision.")
                                     case .macularDegeneration:
                                         Text("Blurred or reduced central vision, difficulty recognizing faces, straight lines appearing wavy.")
+                                    case .diabeticRetinopathy:
+                                        Text("Floaters, blurred vision, impaired color vision, dark or empty areas in your vision, vision loss.")
                                     }
                                 }
 
@@ -63,6 +67,8 @@ struct InfoPanelView: View {
                                         Text("Surgery to replace the cloudy lens with a clear artificial one.")
                                     case .macularDegeneration:
                                         Text("Anti-VEGF injections, laser therapy, dietary supplements for dry form, and vision aids.")
+                                    case .diabeticRetinopathy:
+                                        Text("Blood sugar control, anti-VEGF therapy, laser treatment, and vitrectomy surgery in advanced cases.")
                                     }
                                 }
 
@@ -76,6 +82,8 @@ struct InfoPanelView: View {
                                         Text("Aging, diabetes, smoking, prolonged sun exposure, and alcohol use.")
                                     case .macularDegeneration:
                                         Text("Age over 50, smoking, obesity, high blood pressure, and family history.")
+                                    case .diabeticRetinopathy:
+                                        Text("Diabetes duration, poor blood sugar control, high blood pressure, high cholesterol, pregnancy, tobacco use.")
                                     }
                                 }
                             }

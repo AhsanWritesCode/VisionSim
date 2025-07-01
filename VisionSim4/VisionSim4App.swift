@@ -67,6 +67,12 @@ struct VisionSim4App: App {
                 .environmentObject(appState)
         }
         
+        
+        WindowGroup(id: "diabeticRetinopathyInteractive") {
+            DiabeticRetinopathyInteractiveView(imageName: "dr_scene_park")
+                .environmentObject(appState)
+        }
+        
 //        ImmersiveSpace(id: "glaucomaImmersiveExperience") {
 //            GlaucomaImmersiveView()
 //        }
@@ -85,6 +91,9 @@ struct VisionSim4App: App {
         case .cataracts:
             return impaired ? ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
                             : ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
+        case .diabeticRetinopathy:
+            return impaired ? ["dr_scene_park_impaired", "dr_scene_street_impaired", "dr_scene_office_impaired"]
+                            : ["dr_scene_park", "dr_scene_street", "dr_scene_office"]
         }
     }
 }

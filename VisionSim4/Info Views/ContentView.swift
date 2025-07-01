@@ -10,6 +10,7 @@ enum VisionImpairment: String, CaseIterable, Identifiable {
     case macularDegeneration = "Macular Degeneration"
     case glaucoma = "Glaucoma"
     case cataracts = "Cataracts"
+    case diabeticRetinopathy = "Diabetic Retinopathy"
 }
 
 // Main content view with navigation
