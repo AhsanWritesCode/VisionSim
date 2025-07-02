@@ -19,28 +19,7 @@ struct IntroView: View {
 
                     // Brief description of the app
                     Text("This app simulates various vision impairments to help users understand what conditions like macular degeneration, glaucoma, and cataracts look like.")
-                        .font(.body)
-
-                    Divider()
-
-                    // Creator information
-                    Text("Created by")
-                        .font(.headline)
-                    Text("Ahsan Tariq")
-
-                    Divider()
-
-                    // Supervisor information
-                    Text("Supervised by")
-                        .font(.headline)
-                    Text("Dr. Christian Jacob")
-
-                    Divider()
-
-                    // Funding information
-                    Text("Funding")
-                        .font(.headline)
-                    Text("This research project was supported by Alberta Innovates.")
+                        .font(.body)    
                 }
                 
                 // Constrain the maximum width to keep text from stretching too wide

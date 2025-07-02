@@ -4,7 +4,16 @@ extension VisionImpairment {
     var overview: String {
         switch self {
         case .glaucoma:
-            return "Glaucoma is a group of eye conditions that damage the optic nerve, often due to high eye pressure. It causes peripheral vision loss and can lead to blindness if untreated."
+            return """
+            Glaucoma is a group of eye diseases that can cause vision loss and blindness by damaging a nerve in the back of your eye called the optic nerve.
+
+            The symptoms can start so slowly that you may not notice them.
+
+            The only way to find out if you have glaucoma is to get a comprehensive dilated eye exam.
+
+            There’s no cure for glaucoma, but early treatment can often stop the damage and protect your vision.
+            """
+
         case .cataracts:
             return "Cataracts occur when the lens of the eye becomes cloudy, leading to blurred vision, faded colors, and difficulty seeing at night. Surgery is often required to restore vision."
         case .macularDegeneration:
@@ -17,7 +26,13 @@ extension VisionImpairment {
     var symptoms: String {
         switch self {
         case .glaucoma:
-            return "Gradual peripheral vision loss, tunnel vision, eye pain, and blurred vision."
+            return """
+            At first, glaucoma doesn’t usually have any symptoms. That’s why half of people with glaucoma don’t even know they have it.
+
+            Over time, you may slowly lose vision, usually starting with your side (peripheral) vision — especially the part of your vision that’s closest to your nose. Because it happens so slowly, many people can’t tell that their vision is changing at first.
+
+            But as the disease gets worse, you may start to notice that you can’t see things off to the side anymore. Without treatment, glaucoma can eventually cause blindness.
+            """
         case .cataracts:
             return "Cloudy or blurry vision, faded colors, glare or halos around lights, poor night vision."
         case .macularDegeneration:

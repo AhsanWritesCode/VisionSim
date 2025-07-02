@@ -6,10 +6,12 @@ struct WalkthroughStepView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+                // Impairment Title (stretches full width)
                 Text(impairment.rawValue)
-                    .font(.title)
+                    .font(.largeTitle)
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.bottom, 8)
 
                 // Informational Sections
                 Group {
@@ -26,12 +28,14 @@ struct WalkthroughStepView: View {
                     Text(impairment.riskFactors)
                 }
                 .font(.body)
+                .foregroundColor(.primary)
 
                 Divider()
                     .padding(.vertical)
 
                 Text("Interactive Demo")
                     .font(.headline)
+                    .padding(.bottom, 8)
 
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
@@ -57,17 +61,20 @@ struct WalkthroughStepView: View {
                             }
                         )
                 }
-                .aspectRatio(1.6, contentMode: .fit) // Adjust ratio as needed
+                .aspectRatio(1.6, contentMode: .fit)
                 .cornerRadius(20)
                 .clipped()
             }
+            .padding()
+            .frame(maxWidth: 800)
         }
     }
 
     private func SectionHeader(_ title: String) -> some View {
         Text(title)
-            .font(.headline)
-            .foregroundColor(.accentColor)
-            .padding(.top, 8)
+            .font(.title3)
+            .bold()
+            .foregroundColor(.primary)
+            .padding(.top, 12)
     }
 }
