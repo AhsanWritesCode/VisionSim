@@ -30,7 +30,7 @@ struct VisionSim4App: App {
                     }
                 
             }
-            .environmentObject(appState) // <- inject here
+            .environmentObject(appState)
         }
         
         WindowGroup(id: "infoPanel") {
@@ -66,7 +66,7 @@ struct VisionSim4App: App {
             MacularDegenerationLiveView()
         }
         .defaultSize(width: 800, height: 600)
-        .windowStyle(.plain) // critical for real-world transparency
+        .windowStyle(.plain)
         
         WindowGroup(id: "glaucomaInteractive") {
             GlaucomaInteractiveView(imageName: "gl_scene_park")
@@ -75,7 +75,7 @@ struct VisionSim4App: App {
         WindowGroup(id: "glaucomaLiveOverlay") {
             GlaucomaLiveView()
         }
-        .windowStyle(.plain) // 🔥 This enables the transparent window
+        .windowStyle(.plain)
 
 
         
@@ -94,14 +94,7 @@ struct VisionSim4App: App {
             DiabeticRetinopathyLiveView()
         }
         .defaultSize(width: 1000, height: 700)
-        .windowStyle(.plain) // Important for real-world passthrough!
-
-        
-//        ImmersiveSpace(id: "glaucomaImmersiveExperience") {
-//            GlaucomaImmersiveView()
-//        }
-        .immersionStyle(selection: .constant(.full), in: .full)
-        
+        .windowStyle(.plain)
     }
     
     func imageSet(for impairment: VisionImpairment, impaired: Bool) -> [String] {

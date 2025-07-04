@@ -34,7 +34,7 @@ struct GlaucomaLiveView: View {
                     endRadius: maxRadius
                 )
                 .ignoresSafeArea()
-                .blendMode(.multiply) // Darken the environment
+                .blendMode(.multiply)
             }
 
             // UI Controls

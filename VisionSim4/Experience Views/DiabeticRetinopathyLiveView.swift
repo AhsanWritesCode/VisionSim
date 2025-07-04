@@ -20,7 +20,7 @@ struct DiabeticRetinopathyLiveView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Color.clear.ignoresSafeArea() // Transparent for passthrough
+                Color.clear.ignoresSafeArea()
 
                 TimelineView(.animation) { context in
                     let time = context.date.timeIntervalSinceReferenceDate
