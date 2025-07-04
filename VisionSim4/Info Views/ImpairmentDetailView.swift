@@ -60,7 +60,7 @@ struct ImpairmentDetailView: View {
             }
             
             if impairment == .macularDegeneration {
-                Button("Try Real-World Macular Degeneration Overlay") {
+                Button("Real-World Macular Degeneration Overlay") {
                     experienceWindowToOpen = "macularDegenerationOverlay"
                     showExperienceInstructions = true
                 }
@@ -76,7 +76,7 @@ struct ImpairmentDetailView: View {
             }
             
             if impairment == .glaucoma {
-                Button("Live Environment Overlay (Experimental)") {
+                Button("Real-World Glaucoma Overlay") {
                     appState.selectedImpairment = .glaucoma
                     openWindow(id: "glaucomaLiveOverlay")
                 }
@@ -100,10 +100,12 @@ struct ImpairmentDetailView: View {
                 .buttonStyle(CustomButtonStyle())
             }
             
-            Button("Live Diabetic Retinopathy Simulation") {
-                openWindow(id: "diabeticRetinopathyLive")
+            if impairment == .diabeticRetinopathy {
+                Button("Real-World Diabetic Retinopathy Overlay") {
+                    openWindow(id: "diabeticRetinopathyLive")
+                }
+                .buttonStyle(CustomButtonStyle())
             }
-            .buttonStyle(CustomButtonStyle())
 
 
             Spacer()
