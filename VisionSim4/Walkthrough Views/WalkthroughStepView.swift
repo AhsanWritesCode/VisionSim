@@ -64,6 +64,12 @@ struct WalkthroughStepView: View {
                 .aspectRatio(1.6, contentMode: .fit)
                 .cornerRadius(20)
                 .clipped()
+                
+                Divider()
+                    .padding(.vertical)
+
+                QuizView(question: getQuiz(for: impairment))
+
             }
             .padding()
             .frame(maxWidth: 800)
@@ -77,4 +83,35 @@ struct WalkthroughStepView: View {
             .foregroundColor(.primary)
             .padding(.top, 12)
     }
+    
+    func getQuiz(for impairment: VisionImpairment) -> QuizQuestion {
+        switch impairment {
+        case .glaucoma:
+            return QuizQuestion(
+                question: "Which part of vision is typically affected first in glaucoma?",
+                options: ["Central vision", "Color vision", "Peripheral vision", "Night vision"],
+                correctIndex: 2
+            )
+        case .cataracts:
+            return QuizQuestion(
+                question: "What is the most common treatment for cataracts?",
+                options: ["Eye drops", "Laser therapy", "Sunglasses", "Surgery"],
+                correctIndex: 3
+            )
+        case .macularDegeneration:
+            return QuizQuestion(
+                question: "Macular degeneration affects which part of the eye?",
+                options: ["Cornea", "Optic nerve", "Retina", "Lens"],
+                correctIndex: 2
+            )
+        case .diabeticRetinopathy:
+            return QuizQuestion(
+                question: "Diabetic retinopathy is caused by damage to which structures?",
+                options: ["Iris", "Retinal blood vessels", "Cornea", "Pupil"],
+                correctIndex: 1
+            )
+        }
+    }
+
 }
+
