@@ -1,5 +1,3 @@
-// Glaucoma Interactive View
-
 import SwiftUI
 
 struct GlaucomaInteractiveView: View {
@@ -17,30 +15,14 @@ struct GlaucomaInteractiveView: View {
 
             // Vignette effect
             GeometryReader { geo in
-                // Compute maximum radius (half the diagonal)
                 let maxRadius = hypot(geo.size.width, geo.size.height) / 2
-
-                // Determine how large the clear circle should be:
-                //   - At intensity=0 → clearRadius = maxRadius  (no blackout)
-                //   - At intensity=1 → clearRadius = 0          (fully black)
                 let clearRadius = maxRadius * (1.0 - intensity)
-
-                // Pick how “thick” the blur band should be (in points).
-                // e.g. 60 points of radius used to fade from clear→solid black.
                 let blurWidth: CGFloat = 60
-
-                // Convert absolute radii → normalized (0…1) for the gradient's "stops"
                 let clearFrac   = (clearRadius / maxRadius)
                 let blurFracEnd = ((clearRadius + blurWidth) / maxRadius)
-
-                // Clamp both to [0…1]
                 let cFrac = min(max(clearFrac, 0), 1)
                 let bFrac = min(max(blurFracEnd, 0), 1)
 
-                // Build a radial gradient that is:
-                //   0…cFrac   → fully clear
-                //   cFrac…bFrac → transition      (clear→black)
-                //   bFrac…1.0  → fully black
                 let gradient = RadialGradient(
                     gradient: Gradient(stops: [
                         .init(color: Color.clear, location: 0.0),
@@ -58,11 +40,10 @@ struct GlaucomaInteractiveView: View {
                     .blendMode(.multiply)
             }
 
-            // UI elements
+            // UI
             VStack {
                 Spacer()
 
-                // Slider to control the intensity of the glaucoma effect
                 Slider(value: $intensity, in: 0...1) {
                     Text("Peripheral Vision Loss")
                 }
@@ -71,17 +52,11 @@ struct GlaucomaInteractiveView: View {
                 .cornerRadius(8)
                 .frame(maxWidth: 400)
 
-                // Text describing the current intensity of the effect
                 Text("Peripheral vision loss: \(Int(intensity * 100))%")
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.85))
                     .padding(.top, 8)
                     .padding(.bottom, 8)
-
-//                Button("Exit") {
-//                    dismiss()
-//                }
-//                .padding(.top, 8)
             }
             .padding(.bottom, 75)
         }

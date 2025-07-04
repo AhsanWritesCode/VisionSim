@@ -61,12 +61,23 @@ struct VisionSim4App: App {
                 .environmentObject(appState)
 
         }
-//        .windowStyle(.automatic )
+        
+        WindowGroup(id: "macularDegenerationOverlay") {
+            MacularDegenerationLiveView()
+        }
+        .defaultSize(width: 800, height: 600)
+        .windowStyle(.plain) // critical for real-world transparency
         
         WindowGroup(id: "glaucomaInteractive") {
-            GlaucomaInteractiveView(imageName: "gl_scene_park") // or whatever default image
-                .environmentObject(appState)
+            GlaucomaInteractiveView(imageName: "gl_scene_park")
         }
+        
+        WindowGroup(id: "glaucomaLiveOverlay") {
+            GlaucomaLiveView()
+        }
+        .windowStyle(.plain) // 🔥 This enables the transparent window
+
+
         
         WindowGroup(id: "cataractsInteractive") {
             CataractsInteractiveView(imageName: "cat_scene_park")
@@ -78,6 +89,13 @@ struct VisionSim4App: App {
             DiabeticRetinopathyInteractiveView(imageName: "dr_scene_park")
                 .environmentObject(appState)
         }
+        
+        WindowGroup(id: "diabeticRetinopathyLive") {
+            DiabeticRetinopathyLiveView()
+        }
+        .defaultSize(width: 1000, height: 700)
+        .windowStyle(.plain) // Important for real-world passthrough!
+
         
 //        ImmersiveSpace(id: "glaucomaImmersiveExperience") {
 //            GlaucomaImmersiveView()
