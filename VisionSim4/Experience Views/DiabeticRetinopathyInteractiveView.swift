@@ -48,10 +48,15 @@ struct DiabeticRetinopathyInteractiveView: View {
 
                 }
                 
-                
-                BackToHomeButton()
-                    .padding()
-
+                VStack {
+                    HStack {
+                        BackToHomeButton()
+                            .padding(.leading, 20)
+                            .padding(.top, 20)
+                        Spacer()
+                    }
+                    Spacer()
+                }
                 // Controls
                 VStack {
                     Spacer()
