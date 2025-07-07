@@ -1,5 +1,3 @@
-// Content View
-
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -15,6 +13,8 @@ enum VisionImpairment: String, CaseIterable, Identifiable {
 
 // Main content view with navigation
 struct ContentView: View {
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
         NavigationView {
             List(VisionImpairment.allCases) { impairment in
@@ -23,6 +23,12 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Select Impairment")
+        }
+        .onAppear {
+            appState.isMainWindowOpen = true
+        }
+        .onDisappear {
+            appState.isMainWindowOpen = false
         }
     }
 }

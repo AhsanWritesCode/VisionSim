@@ -18,19 +18,23 @@ struct VisionSim4App: App {
                     .tabItem {
                         Label("Walkthrough", systemImage: "book")
                     }
-                
+
                 ContentView()
                     .tabItem {
                         Label("Impairments", systemImage: "eye")
                     }
-                
+
                 CreditsView()
                     .tabItem {
                         Label("Credits", systemImage: "person.3.fill")
                     }
-                
             }
             .environmentObject(appState)
+        }
+        
+        WindowGroup(id: "mainContent") {
+            ContentView()
+                .environmentObject(appState)
         }
         
         WindowGroup(id: "infoPanel") {
