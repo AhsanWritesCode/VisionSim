@@ -4,7 +4,7 @@ struct DiabeticRetinopathyInteractiveView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var floaterDensity: CGFloat = 0.0
     let imageName: String
-
+    
     private let maxFloaters = 20
     private let randomFloaterPositions: [CGPoint] = (0..<40).map { _ in
         CGPoint(x: CGFloat.random(in: 0.0...1.0), y: CGFloat.random(in: 0.0...1.0))
@@ -13,7 +13,7 @@ struct DiabeticRetinopathyInteractiveView: View {
     private let randomFloaterAngles: [Angle] = (0..<40).map { _ in
         Angle.degrees(Double.random(in: 0..<360))
     }
-
+    
     private let randomFloaterSizes: [CGSize] = (0..<40).map { _ in
         let width = CGFloat.random(in: 60...100)
         let height = CGFloat.random(in: 20...40)
@@ -29,7 +29,7 @@ struct DiabeticRetinopathyInteractiveView: View {
                     .scaledToFill()
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .clipped()
-
+                
                 // Floaters (overlay ellipses)
                 let count = Int(floaterDensity * CGFloat(maxFloaters))
                 ForEach(0..<count, id: \.self) { i in
@@ -45,22 +45,12 @@ struct DiabeticRetinopathyInteractiveView: View {
                             x: pos.x * geometry.size.width,
                             y: pos.y * geometry.size.height
                         )
-
                 }
                 
                 VStack {
-                    HStack {
-                        BackToHomeButton()
-                            .padding(.leading, 20)
-                            .padding(.top, 20)
-                        Spacer()
-                    }
                     Spacer()
-                }
-                // Controls
-                VStack {
-                    Spacer()
-
+                    
+                    // Slider
                     Slider(value: $floaterDensity, in: 0...1) {
                         Text("Floaters")
                     }
@@ -68,19 +58,33 @@ struct DiabeticRetinopathyInteractiveView: View {
                     .background(.ultraThinMaterial)
                     .cornerRadius(10)
                     .frame(maxWidth: 400)
-
+                    
+                    // Intensity label (wrapped for visibility)
                     Text("Floaters: \(Int(floaterDensity * 100))%")
                         .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.85))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(10)
+                        .foregroundColor(.primary)
+                    
 
-                    Button("Exit") {
-                        dismiss()
-                    }
-                    .padding(.top, 4)
                 }
                 .padding(.bottom, 75)
+                
+                
+                // Back button - placed independently in top-left corner
+                VStack {
+                    HStack {
+                        BackToHomeButton()
+                            .padding(.top, geometry.safeAreaInsets.top + 12)
+                            .padding(.leading, 20)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .ignoresSafeArea(.all, edges: .top)
             }
-            .ignoresSafeArea()
         }
     }
 }

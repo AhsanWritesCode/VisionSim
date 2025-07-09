@@ -1,21 +1,33 @@
-// Info Panel View
-
 import SwiftUI
 
-// A movable Info Panel that displays details about a selected vision impairment.
 struct InfoPanelView: View {
     let impairment: VisionImpairment
-    
-    // Lets users dismiss this window by tapping done.
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
             VStack {
-                // Main text block
+                // Top Bar with Back and Done
+                HStack {
+                    BackToHomeButton()
+                        .padding(.leading, 20)
+                        .padding(.top, 20)
+
+                    Spacer()
+
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.top, 20)
+                }
+
+                Spacer()
+
+                // Main Info Panel Content
                 VStack(spacing: 25) {
                     Text("About \(impairment.rawValue)")
-                        .font(.title2) // Medium title font
+                        .font(.title2)
                         .bold()
                         .multilineTextAlignment(.center)
 
@@ -28,63 +40,17 @@ struct InfoPanelView: View {
                         ScrollView {
                             VStack(alignment: .leading, spacing: 20) {
                                 Group {
-                                    Text("Overview")
-                                        .font(.headline)
-                                    switch impairment {
-                                    case .glaucoma:
-                                        Text("Glaucoma is a group of eye conditions that damage the optic nerve, often due to high eye pressure. It causes peripheral vision loss and can lead to blindness if untreated.")
-                                    case .cataracts:
-                                        Text("Cataracts occur when the lens of the eye becomes cloudy, leading to blurred vision, faded colors, and difficulty seeing at night. Surgery is often required to restore vision.")
-                                    case .macularDegeneration:
-                                        Text("Macular degeneration is a disease that affects the central part of the retina, causing central vision loss. It primarily impacts older adults and can be dry or wet in form.")
-                                    case .diabeticRetinopathy:
-                                        Text("Diabetic retinopathy is a complication of diabetes that affects the eyes. It is caused by damage to the blood vessels of the retina and can lead to vision loss if untreated.")
-                                    }
-                                }
+                                    Text("Overview").font(.headline)
+                                    Text(overviewText(for: impairment))
 
-                                Group {
-                                    Text("Symptoms")
-                                        .font(.headline)
-                                    switch impairment {
-                                    case .glaucoma:
-                                        Text("Gradual peripheral vision loss, tunnel vision, eye pain, and blurred vision.")
-                                    case .cataracts:
-                                        Text("Cloudy or blurry vision, faded colors, glare or halos around lights, poor night vision.")
-                                    case .macularDegeneration:
-                                        Text("Blurred or reduced central vision, difficulty recognizing faces, straight lines appearing wavy.")
-                                    case .diabeticRetinopathy:
-                                        Text("Floaters, blurred vision, impaired color vision, dark or empty areas in your vision, vision loss.")
-                                    }
-                                }
+                                    Text("Symptoms").font(.headline)
+                                    Text(symptomsText(for: impairment))
 
-                                Group {
-                                    Text("Treatment")
-                                        .font(.headline)
-                                    switch impairment {
-                                    case .glaucoma:
-                                        Text("Prescription eye drops, oral medications, laser therapy, or surgery to reduce eye pressure.")
-                                    case .cataracts:
-                                        Text("Surgery to replace the cloudy lens with a clear artificial one.")
-                                    case .macularDegeneration:
-                                        Text("Anti-VEGF injections, laser therapy, dietary supplements for dry form, and vision aids.")
-                                    case .diabeticRetinopathy:
-                                        Text("Blood sugar control, anti-VEGF therapy, laser treatment, and vitrectomy surgery in advanced cases.")
-                                    }
-                                }
+                                    Text("Treatment").font(.headline)
+                                    Text(treatmentText(for: impairment))
 
-                                Group {
-                                    Text("Risk Factors")
-                                        .font(.headline)
-                                    switch impairment {
-                                    case .glaucoma:
-                                        Text("Age over 60, family history, high eye pressure, diabetes, and African or Hispanic descent.")
-                                    case .cataracts:
-                                        Text("Aging, diabetes, smoking, prolonged sun exposure, and alcohol use.")
-                                    case .macularDegeneration:
-                                        Text("Age over 50, smoking, obesity, high blood pressure, and family history.")
-                                    case .diabeticRetinopathy:
-                                        Text("Diabetes duration, poor blood sugar control, high blood pressure, high cholesterol, pregnancy, tobacco use.")
-                                    }
+                                    Text("Risk Factors").font(.headline)
+                                    Text(riskFactorsText(for: impairment))
                                 }
                             }
                             .font(.body)
@@ -95,19 +61,64 @@ struct InfoPanelView: View {
                     }
                     .padding(.top)
                 }
-            }
-            .padding()
 
-            VStack {
-                HStack {
-                    Spacer()
-                    Button("Done") {
-                        dismiss()
-                    }
-                    .padding()
-                }
                 Spacer()
             }
+            .padding()
+        }
+    }
+
+    // MARK: - Text Generators
+
+    func overviewText(for impairment: VisionImpairment) -> String {
+        switch impairment {
+        case .glaucoma:
+            return "Glaucoma is a group of eye conditions that damage the optic nerve, often due to high eye pressure..."
+        case .cataracts:
+            return "Cataracts occur when the lens of the eye becomes cloudy, leading to blurred vision..."
+        case .macularDegeneration:
+            return "Macular degeneration affects the central retina, causing central vision loss..."
+        case .diabeticRetinopathy:
+            return "Diabetic retinopathy is a complication of diabetes that damages the retina's blood vessels..."
+        }
+    }
+
+    func symptomsText(for impairment: VisionImpairment) -> String {
+        switch impairment {
+        case .glaucoma:
+            return "Gradual peripheral vision loss, tunnel vision, eye pain, and blurred vision."
+        case .cataracts:
+            return "Cloudy or blurry vision, faded colors, glare or halos around lights, poor night vision."
+        case .macularDegeneration:
+            return "Blurred or reduced central vision, difficulty recognizing faces, straight lines appearing wavy."
+        case .diabeticRetinopathy:
+            return "Floaters, blurred vision, impaired color vision, dark or empty areas, vision loss."
+        }
+    }
+
+    func treatmentText(for impairment: VisionImpairment) -> String {
+        switch impairment {
+        case .glaucoma:
+            return "Prescription eye drops, oral medications, laser therapy, or surgery."
+        case .cataracts:
+            return "Surgery to replace the cloudy lens with a clear artificial one."
+        case .macularDegeneration:
+            return "Anti-VEGF injections, laser therapy, dietary supplements, and vision aids."
+        case .diabeticRetinopathy:
+            return "Blood sugar control, anti-VEGF therapy, laser treatment, and vitrectomy surgery."
+        }
+    }
+
+    func riskFactorsText(for impairment: VisionImpairment) -> String {
+        switch impairment {
+        case .glaucoma:
+            return "Age over 60, family history, high eye pressure, diabetes, and certain ethnicities."
+        case .cataracts:
+            return "Aging, diabetes, smoking, prolonged sun exposure, alcohol use."
+        case .macularDegeneration:
+            return "Age over 50, smoking, obesity, high blood pressure, family history."
+        case .diabeticRetinopathy:
+            return "Diabetes duration, poor control, high blood pressure, cholesterol, pregnancy, smoking."
         }
     }
 }
