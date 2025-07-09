@@ -64,13 +64,13 @@ struct DiabeticRetinopathyInteractiveView: View {
                         .font(.subheadline)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(.ultraThinMaterial)
+                        .background(.ultraThinMaterial) // Adds blurred background for contrast
                         .cornerRadius(10)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.primary) // Adapts to light/dark modes
                     
 
                 }
-                .padding(.bottom, 75)
+                .padding(.bottom, 30)
                 
                 
                 // Back button - placed independently in top-left corner

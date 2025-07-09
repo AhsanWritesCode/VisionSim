@@ -68,16 +68,19 @@ struct VisionSim4App: App {
         
         WindowGroup(id: "macularDegenerationOverlay") {
             MacularDegenerationLiveView()
+                .environmentObject(appState)
         }
         .defaultSize(width: 800, height: 600)
         .windowStyle(.plain)
         
         WindowGroup(id: "glaucomaInteractive") {
             GlaucomaInteractiveView(imageName: "gl_scene_park")
+                .environmentObject(appState)
         }
         
         WindowGroup(id: "glaucomaLiveOverlay") {
             GlaucomaLiveView()
+                .environmentObject(appState)
         }
         .windowStyle(.plain)
 
@@ -96,6 +99,7 @@ struct VisionSim4App: App {
         
         WindowGroup(id: "diabeticRetinopathyLive") {
             DiabeticRetinopathyLiveView()
+                .environmentObject(appState)
         }
         .defaultSize(width: 1000, height: 700)
         .windowStyle(.plain)
