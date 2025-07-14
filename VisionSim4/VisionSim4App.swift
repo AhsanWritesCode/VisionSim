@@ -24,6 +24,10 @@ struct VisionSim4App: App {
                         Label("Impairments", systemImage: "eye")
                     }
 
+                ModelView()
+                    .tabItem {
+                        Label("Model", systemImage: "cube.fill")
+                    }
                 CreditsView()
                     .tabItem {
                         Label("Credits", systemImage: "person.3.fill")
