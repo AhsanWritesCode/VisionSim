@@ -73,7 +73,7 @@ struct MacularDegenerationInteractiveView: View {
                         .padding(.top, 8)
                         .padding(.bottom, 8)
                 }
-                .padding(.bottom, 150)
+                .padding(.bottom, 100)
                 
                 // Back button - placed independently in top-left corner
                 VStack {

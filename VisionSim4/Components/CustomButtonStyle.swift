@@ -8,7 +8,7 @@ struct CustomButtonStyle: ButtonStyle {
             .font(.headline)
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color(white: 0.2))
+//            .background(Color(white: 0.2))
             .cornerRadius(12)
             .foregroundColor(.white)
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)

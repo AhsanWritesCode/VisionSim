@@ -13,13 +13,13 @@ struct IntroView: View {
                 // VStack to stack all text and dividers vertically with spacing.
                 VStack(spacing: 24) {
                     // App title
-                    Text("Welcome to VisionSim")
+                    Text("Welcome to Seeing Differently")
                         .font(.largeTitle)
                         .bold()
 
                     // Brief description of the app
-                    Text("This app simulates various vision impairments to help users understand what conditions like macular degeneration, glaucoma, and cataracts look like.")
-                        .font(.body)    
+                    Text("This app simulates various vision impairments to help users understand what conditions like macular degeneration, glaucoma, and cataracts look like. In the future, we plan to develop simulations of vision systems beyond just the human eye.")
+                        .font(.body)
                 }
                 
                 // Constrain the maximum width to keep text from stretching too wide

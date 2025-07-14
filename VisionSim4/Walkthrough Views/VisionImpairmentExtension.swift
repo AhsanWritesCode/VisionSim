@@ -5,21 +5,33 @@ extension VisionImpairment {
         switch self {
         case .glaucoma:
             return """
-            Glaucoma is a group of eye diseases that can cause vision loss and blindness by damaging a nerve in the back of your eye called the optic nerve.
+            Glaucoma is the name of a group of eye diseases that damage the optic nerve. 
+            
+            The most common type of glaucoma is open-angle glaucoma, but there are three other major types: closed-angle glaucoma, congenital glaucoma, and secondary glaucoma.
+            
+            If left untreated, it can lead to significant loss of peripheral vision and eventual blindness. Often described as the silent thief of sight, its symptoms are initially imperceptible as the peripheral vision loss begins close to your nose. As a result, the only way to find out if you have glaucoma in its early stages is to get a comprehensive dilated eye exam.
 
-            The symptoms can start so slowly that you may not notice them.
-
-            The only way to find out if you have glaucoma is to get a comprehensive dilated eye exam.
-
-            There’s no cure for glaucoma, but early treatment can often stop the damage and protect your vision.
+            If glaucoma is treated early, the damage to an individual's eye can be minimized and their vision can be saved. Unfortunately, there is no cure for glaucoma. 
             """
 
         case .cataracts:
             return "Cataracts occur when the lens of the eye becomes cloudy, leading to blurred vision, faded colors, and difficulty seeing at night. Surgery is often required to restore vision."
         case .macularDegeneration:
-            return "Macular degeneration is a disease that affects the central part of the retina, causing central vision loss. It primarily impacts older adults and can be dry or wet in form."
+            return """
+            Age-related macular degeneration (AMD) is a vision impairment which blurs an individual's central vision. It's caused by damage to the macula as a result of aging (hence the name). The macula is part of the retina, and controls central vision. 
+            
+            There are two types of AMD: dry AMD and wet AMD. Dry AMD progresses through early, intermediate, and late stages, while wet AMD is always considered late stage AMD. Dry AMD can turn into wet AMD at any stage. 
+            
+            While AMD doesn't cause complete blindness, it can significantly decrease quality of life for an individual. Some things that are difficult for individuals that have AMD include reading signs, making out faces, reading, driving, and cooking. 
+            """
         case .diabeticRetinopathy:
-            return "Diabetic retinopathy is a complication of diabetes that affects the eyes. It is caused by damage to the blood vessels of the retina and can lead to vision loss if untreated."
+            return """
+            Age-related macular degeneration (AMD) is a vision impairment which blurs an individual's central vision. It's caused by damage to the macula as a result of aging (hence the name). The macula is part of the retina, and controls central vision. 
+            
+            There are two types of AMD: dry AMD and wet AMD. Dry AMD progresses through early, intermediate, and late stages, while wet AMD is always considered late stage AMD. Dry AMD can turn into wet AMD at any stage. 
+            
+            While AMD doesn't cause complete blindness, it can significantly decrease quality of life for an individual. Some things that are difficult for individuals that have AMD include reading signs, making out faces, reading, driving, and cooking. 
+            """
         }
     }
 
@@ -27,11 +39,11 @@ extension VisionImpairment {
         switch self {
         case .glaucoma:
             return """
-            At first, glaucoma doesn’t usually have any symptoms. That’s why half of people with glaucoma don’t even know they have it.
+            In its early stages, individuals with glacuoma don't experience any symptoms. The CDC states that, for this reason, 50% of people with glaucoma don't know they have it.  
 
-            Over time, you may slowly lose vision, usually starting with your side (peripheral) vision — especially the part of your vision that’s closest to your nose. Because it happens so slowly, many people can’t tell that their vision is changing at first.
-
-            But as the disease gets worse, you may start to notice that you can’t see things off to the side anymore. Without treatment, glaucoma can eventually cause blindness.
+            Over time, vision loss begins to occur, beginning with an individual's peripheral vision (especially the vision closest to an individual's nose). 
+            
+            Without treatment, glaucoma eventually leads to complete blindness. 
             """
         case .cataracts:
             return "Cloudy or blurry vision, faded colors, glare or halos around lights, poor night vision."
@@ -47,9 +59,9 @@ extension VisionImpairment {
         case .glaucoma:
             return "Prescription eye drops, oral medications, laser therapy, or surgery to reduce eye pressure."
         case .cataracts:
-            return "Surgery to replace the cloudy lens with a clear artificial one."
+            return "In its early stages, cataracts can be treated by simply using brighter lights, wearing glasses, and making other lifestyle changes. Cataracts can also be treated effectively with surgery; in the procedure, the clouded lens is replaced with an artificial lens called an intraocular lens (IOL)."
         case .macularDegeneration:
-            return "Anti-VEGF injections, laser therapy, dietary supplements for dry form, and vision aids."
+            return "There is no treatment for early or late-stage dry AMD. However, dietary supplements may be able to slow the progression of intermediate dry AMD to late stage dry AMD. For wet AMD specifically, anti-VEGF drugs and photodynamic therapy may be able to prevent further vision loss."
         case .diabeticRetinopathy:
             return "Blood sugar control, anti-VEGF therapy, laser treatment, and vitrectomy surgery in advanced cases."
         }
@@ -58,11 +70,11 @@ extension VisionImpairment {
     var riskFactors: String {
         switch self {
         case .glaucoma:
-            return "Age over 60, family history, high eye pressure, diabetes, and African or Hispanic descent."
+            return "The risk for glaucoma is higher in individuals over the age of 60; those that are over the age of 40 and African American are also at higher risk. Having a family history of the condition also increases an individual's risk of developing it themselves."
         case .cataracts:
             return "Aging, diabetes, smoking, prolonged sun exposure, and alcohol use."
         case .macularDegeneration:
-            return "Age over 50, smoking, obesity, high blood pressure, and family history."
+            return "The risk for macular degeneration increases as an individual ages; those that are over the age of 55 are more likely to have AMD. Other risk factors include smoking, being caucasian, and having a family history of the condition."
         case .diabeticRetinopathy:
             return "Diabetes duration, poor blood sugar control, high blood pressure, high cholesterol, pregnancy, tobacco use."
         }
