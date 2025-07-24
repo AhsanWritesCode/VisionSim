@@ -24,7 +24,7 @@ struct VisionSim4App: App {
                         Label("Impairments", systemImage: "eye")
                     }
 
-                ModelView()
+                ModelSelectionView()
                     .tabItem {
                         Label("Model", systemImage: "cube.fill")
                     }
@@ -95,6 +95,19 @@ struct VisionSim4App: App {
                 .environmentObject(appState)
         }
         
+        WindowGroup(id: "modelSelection") {
+            ModelSelectionView()
+                .environmentObject(appState)
+        }
+        .defaultSize(width: 600, height: 400)
+        .windowStyle(.plain)
+
+        WindowGroup(id: "modelView") {
+            ModelView()
+                .environmentObject(appState)
+        }
+        .windowStyle(.volumetric)
+        .defaultSize(width: 1.0, height: 1.0, depth: 1.0)
         
         WindowGroup(id: "diabeticRetinopathyInteractive") {
             DiabeticRetinopathyInteractiveView(imageName: "dr_scene_park")
