@@ -50,6 +50,17 @@ struct ImpairmentDetailView: View {
                 openWindow(id: "impairedView")
             }
             .buttonStyle(CustomButtonStyle())
+            
+            Button("See Red Circle Model") {
+                appState.selectedImpairment = impairment
+                openWindow(id: "redCircleView")
+            }
+            .buttonStyle(CustomButtonStyle())
+            
+            Button("Open Eye Model") {
+                openWindow(id: "eye-view")
+            }
+
 
             if impairment == .macularDegeneration {
                 Button("Interactive Macular Degeneration Visualization") {

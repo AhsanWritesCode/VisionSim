@@ -24,10 +24,10 @@ struct VisionSim4App: App {
                         Label("Impairments", systemImage: "eye")
                     }
 
-                ModelSelectionView()
-                    .tabItem {
-                        Label("Model", systemImage: "cube.fill")
-                    }
+//                ModelSelectionView()
+//                    .tabItem {
+//                        Label("Model", systemImage: "cube.fill")
+//                    }
                 CreditsView()
                     .tabItem {
                         Label("Credits", systemImage: "person.3.fill")
@@ -95,24 +95,38 @@ struct VisionSim4App: App {
                 .environmentObject(appState)
         }
         
-        WindowGroup(id: "modelSelection") {
-            ModelSelectionView()
-                .environmentObject(appState)
-        }
-        .defaultSize(width: 600, height: 400)
-        .windowStyle(.plain)
+//        WindowGroup(id: "modelSelection") {
+//            ModelSelectionView()
+//                .environmentObject(appState)
+//        }
+//        .defaultSize(width: 600, height: 400)
+//        .windowStyle(.plain)
 
-        WindowGroup(id: "modelView") {
-            ModelView()
-                .environmentObject(appState)
-        }
-        .windowStyle(.volumetric)
-        .defaultSize(width: 1.0, height: 1.0, depth: 1.0)
+//        WindowGroup(id: "modelView") {
+//            ModelView()
+//                .environmentObject(appState)
+//        }
+//        .windowStyle(.volumetric)
+//        .defaultSize(width: 1.0, height: 1.0, depth: 1.0)
         
         WindowGroup(id: "diabeticRetinopathyInteractive") {
             DiabeticRetinopathyInteractiveView(imageName: "dr_scene_park")
                 .environmentObject(appState)
         }
+        
+        WindowGroup(id: "redCircleView") {
+            RedCircleView()
+        }
+        .windowStyle(.volumetric)
+        .defaultSize(width: 0.3, height: 0.3, depth: 0.1, in: .meters)
+        
+        WindowGroup(id: "eye-view") {
+            EyeView()
+                .environment(ViewModel())
+        }
+        .windowStyle(.volumetric)
+        .defaultSize(width: 0.4, height: 0.4, depth: 0.4, in: .meters)
+
         
         WindowGroup(id: "diabeticRetinopathyLive") {
             DiabeticRetinopathyLiveView()
