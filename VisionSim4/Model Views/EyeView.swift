@@ -13,3 +13,8 @@ struct EyeView: View {
         }
     }
 }
+
+#Preview {
+    EyeView()
+        .environment(ViewModel())
+}
