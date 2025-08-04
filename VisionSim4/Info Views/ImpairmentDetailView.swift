@@ -58,7 +58,7 @@ struct ImpairmentDetailView: View {
             .buttonStyle(CustomButtonStyle())
             
             Button("Open Eye Model") {
-                openWindow(id: "eye-view")
+                appState.shouldShowEyeModel = true
             }
 
 

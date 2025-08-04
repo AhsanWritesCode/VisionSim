@@ -9,14 +9,6 @@ class EyeEntity: Entity {
     // MARK: - Model container
     private var eyeModel: Entity = Entity()
 
-//    // MARK: - Configuration
-//    struct Configuration {
-//        var modelName: String = "EyeModel"                      // The .usdz filename (without extension)
-//        var scale: SIMD3<Float> = [0.01, 0.01, 0.01]            // Meters
-//        var position: SIMD3<Float> = [0, -0.1, -0.2]            // In scene space
-//        var rotation: simd_quatf = simd_quatf()                 // Quaternion rotation
-//    }
-
     /// Default configuration   
     static let `default` = Configuration()
 

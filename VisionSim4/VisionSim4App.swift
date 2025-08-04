@@ -120,14 +120,6 @@ struct VisionSim4App: App {
         .windowStyle(.volumetric)
         .defaultSize(width: 0.3, height: 0.3, depth: 0.1, in: .meters)
         
-        WindowGroup(id: "eye-view") {
-            EyeView()
-                .environment(ViewModel())
-        }
-        .windowStyle(.volumetric)
-        .defaultSize(width: 0.4, height: 0.4, depth: 0.4, in: .meters)
-
-        
         WindowGroup(id: "diabeticRetinopathyLive") {
             DiabeticRetinopathyLiveView()
                 .environmentObject(appState)
