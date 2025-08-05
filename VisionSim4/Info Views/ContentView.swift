@@ -21,15 +21,15 @@ struct ContentView: View {
             .onDisappear {
                 appState.isMainWindowOpen = false
             }
-
-            // 👁️ Add EyeModel to scene if requested
-            RealityView { content in
-                if appState.shouldShowEyeModel {
-                    let eye = await EyeEntity(configuration: .normalEye)
-                    content.add(eye)
-                }
-            }
-            .allowsHitTesting(false) // Prevent UI interference
+//
+//            // 👁️ Add EyeModel to scene if requested
+//            RealityView { content in
+//                if appState.shouldShowEyeModel {
+//                    let eye = await EyeEntity(configuration: .normalEye)
+//                    content.add(eye)
+//                }
+//            }
+//            .allowsHitTesting(false) // Prevent UI interference
         }
     }
 }

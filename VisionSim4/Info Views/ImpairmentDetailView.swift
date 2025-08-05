@@ -51,15 +51,15 @@ struct ImpairmentDetailView: View {
             }
             .buttonStyle(CustomButtonStyle())
             
-            Button("See Red Circle Model") {
-                appState.selectedImpairment = impairment
-                openWindow(id: "redCircleView")
-            }
-            .buttonStyle(CustomButtonStyle())
+//            Button("See Red Circle Model") {
+//                appState.selectedImpairment = impairment
+//                openWindow(id: "redCircleView")
+//            }
+//            .buttonStyle(CustomButtonStyle())
             
-            Button("Open Eye Model") {
-                appState.shouldShowEyeModel = true
-            }
+//            Button("Open Eye Model") {
+//                appState.shouldShowEyeModel = true
+//            }
 
 
             if impairment == .macularDegeneration {
