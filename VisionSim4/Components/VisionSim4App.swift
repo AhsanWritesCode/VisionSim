@@ -115,16 +115,16 @@ struct VisionSim4App: App {
                 .environmentObject(appState)
         }
         
-        WindowGroup(id: "Eye") {
-            Eye()
+        WindowGroup(id: "Eye", for: String.self) { $modelName in
+            Eye(modelName: modelName ?? "EyeModel")
         }
         .windowStyle(.plain)
         
-        WindowGroup(id: "redCircleView") {
-            RedCircleView()
-        }
-        .windowStyle(.volumetric)
-        .defaultSize(width: 0.3, height: 0.3, depth: 0.1, in: .meters)
+//        WindowGroup(id: "redCircleView") {
+//            RedCircleView()
+//        }
+//        .windowStyle(.volumetric)
+//        .defaultSize(width: 0.3, height: 0.3, depth: 0.1, in: .meters)
         
         WindowGroup(id: "diabeticRetinopathyLive") {
             DiabeticRetinopathyLiveView()
