@@ -290,35 +290,17 @@ struct InstructionSheet: View {
         .presentationBackground(.clear) // keeps the sheet glassy over your window
     }
 }
-
+// ImpairmentDetailView.swift
+import SwiftUI
 
 struct ImpairmentDetailView: View {
     @Environment(\.openWindow) private var openWindow
-    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @EnvironmentObject var appState: AppState
 
     let impairment: VisionImpairment
 
     @State private var showExperienceInstructions = false
     @State private var experienceWindowToOpen: String?
-
-    // MARK: - Image sets
-    var normalImages: [String] {
-        switch impairment {
-        case .macularDegeneration: return ["md_scene_park", "md_scene_street", "md_scene_office"]
-        case .glaucoma:            return ["gl_scene_park", "gl_scene_street", "gl_scene_office"]
-        case .cataracts:           return ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
-        case .diabeticRetinopathy: return ["dr_scene_park", "dr_scene_street", "dr_scene_office"]
-        }
-    }
-    var impairedImages: [String] {
-        switch impairment {
-        case .macularDegeneration: return ["md_scene_park_impaired", "md_scene_street_impaired", "md_scene_office_impaired"]
-        case .glaucoma:            return ["gl_scene_park_impaired", "gl_scene_street_impaired", "gl_scene_office_impaired"]
-        case .cataracts:           return ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
-        case .diabeticRetinopathy: return ["dr_scene_park_impaired", "dr_scene_street_impaired", "dr_scene_office_impaired"]
-        }
-    }
 
     // MARK: - Per-impairment UI
     private var iconName: String {
@@ -338,13 +320,23 @@ struct ImpairmentDetailView: View {
         }
     }
 
-    // Interactive window IDs
+    // Interactive window ids
     private var interactiveWindowID: String {
         switch impairment {
         case .macularDegeneration: return "macularDegenerationInteractive"
         case .glaucoma:            return "glaucomaInteractive"
         case .cataracts:           return "cataractsInteractive"
         case .diabeticRetinopathy: return "diabeticRetinopathyInteractive"
+        }
+    }
+
+    // Live “real-world overlay” window ids
+    private var liveWindowID: String {
+        switch impairment {
+        case .macularDegeneration: return "macularDegenerationOverlay"
+        case .glaucoma:            return "glaucomaLiveOverlay"
+        case .cataracts:           return "cataractsOverlay"
+        case .diabeticRetinopathy: return "diabeticRetinopathyLive"
         }
     }
 
@@ -364,7 +356,7 @@ struct ImpairmentDetailView: View {
 
                         Text(impairment.rawValue)
                             .font(.system(.largeTitle, design: .rounded).weight(.bold))
-                        Spacer(minLength: 0)
+                        Spacer()
                     }
                     Text(subtitle(for: impairment))
                         .font(.callout)
@@ -372,7 +364,7 @@ struct ImpairmentDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
-                // Interactive card
+                // Interactive card (preset images)
                 ActionCard(
                     title: "Interactive Visualization",
                     subtitle: "Use preset photos. Adjust severity with a slider and compare normal vs affected vision.",
@@ -383,7 +375,7 @@ struct ImpairmentDetailView: View {
                     showExperienceInstructions = true
                 }
 
-                // Real-world immersive card
+                // Real-world overlay (window)
                 ActionCard(
                     title: "Real-World Overlay",
                     subtitle: "Apply the effect to your surroundings for an in-situ experience.",
@@ -391,11 +383,10 @@ struct ImpairmentDetailView: View {
                     accent: color
                 ) {
                     appState.selectedImpairment = impairment
-                    Task { await openImmersiveSpace(id: "impairmentImmersive") }
+                    openWindow(id: liveWindowID)   // ← back to windows
                 }
 
                 TipRow(text: "You can reposition the window to different backgrounds to see how lighting changes the effect.")
-
                 Spacer(minLength: 8)
             }
             .padding(28)
@@ -405,11 +396,7 @@ struct ImpairmentDetailView: View {
                 startTapped: {
                     showExperienceInstructions = false
                     appState.selectedImpairment = impairment
-                    if let id = experienceWindowToOpen {
-                        openWindow(id: id) // interactive windows
-                    } else {
-                        Task { await openImmersiveSpace(id: "impairmentImmersive") }
-                    }
+                    if let id = experienceWindowToOpen { openWindow(id: id) }
                 },
                 accent: color
             )
@@ -421,7 +408,6 @@ struct ImpairmentDetailView: View {
         }
     }
 
-    // concise per-impairment blurb
     private func subtitle(for i: VisionImpairment) -> String {
         switch i {
         case .macularDegeneration: return "Explore central vision loss and its impact on reading and face recognition."
@@ -431,3 +417,5 @@ struct ImpairmentDetailView: View {
         }
     }
 }
+
+// ——— your ActionCard / TipRow / FilledGlassButtonStyle / InstructionSheet components from earlier remain unchanged ———

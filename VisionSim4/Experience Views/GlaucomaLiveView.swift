@@ -1,107 +1,34 @@
-//import SwiftUI
-//
-//struct GlaucomaLiveView: View {
-//    @Environment(\.dismiss) private var dismiss
-//    @State private var intensity: CGFloat = 0.0   // 0 = no blackout, 1 = full blackout
-//    
-//    var body: some View {
-//        GeometryReader { geometry in
-//            ZStack {
-//                // Transparent background (lets environment show through)
-//                Color.clear
-//                    .ignoresSafeArea()
-//                
-//                // Vignette effect (simulated peripheral vision loss)
-//                GeometryReader { geo in
-//                    let maxRadius = hypot(geo.size.width, geo.size.height) / 2
-//                    let clearRadius = maxRadius * (1.0 - intensity)
-//                    let blurWidth: CGFloat = 60
-//                    
-//                    let clearFrac = (clearRadius / maxRadius)
-//                    let blurFracEnd = ((clearRadius + blurWidth) / maxRadius)
-//                    
-//                    let cFrac = min(max(clearFrac, 0), 1)
-//                    let bFrac = min(max(blurFracEnd, 0), 1)
-//                    
-//                    RadialGradient(
-//                        gradient: Gradient(stops: [
-//                            .init(color: .clear, location: 0.0),
-//                            .init(color: .clear, location: cFrac),
-//                            .init(color: .black, location: bFrac),
-//                            .init(color: .black, location: 1.0)
-//                        ]),
-//                        center: .center,
-//                        startRadius: 0,
-//                        endRadius: maxRadius
-//                    )
-//                    .ignoresSafeArea()
-//                    .blendMode(.multiply)
-//                }
-//                
-//                // UI Controls
-//                VStack {
-//                    Spacer()
-//                    
-//                    Slider(value: $intensity, in: 0...1) {
-//                        Text("Peripheral Vision Loss")
-//                    }
-//                    .padding()
-//                    .background(.ultraThinMaterial)
-//                    .cornerRadius(8)
-//                    .frame(maxWidth: 400)
-//                    
-//                    Text("Peripheral vision loss: \(Int(intensity * 100))%")
-//                        .font(.subheadline)
-//                        .foregroundColor(.white.opacity(0.85))
-//                        .padding(.top, 8)
-//                        .padding(.bottom, 8)
-//                }
-//                .padding(.bottom, 75)
-//                
-//                // Back button - placed independently in top-left corner
-//                VStack {
-//                    HStack {
-//                        BackToHomeButton()
-//                            .padding(.top, geometry.safeAreaInsets.top + 12)
-//                            .padding(.leading, 20)
-//                        Spacer()
-//                    }
-//                    Spacer()
-//                }
-//                .ignoresSafeArea(.all, edges: .top)
-//            }
-//        }
-//    }
-//}
-
-
 import SwiftUI
 
-struct GlaucomaImmersiveOverlay: View {
+struct GlaucomaLiveView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var intensity: CGFloat = 0.0   // 0 = none, 1 = full
-
+    @State private var intensity: CGFloat = 0.0   // 0 = no blackout, 1 = full blackout
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // The immersive space shows passthrough behind this view
-                Color.clear.ignoresSafeArea()
-
-                // Your vignette effect
+                // Transparent background (lets environment show through)
+                Color.clear
+                    .ignoresSafeArea()
+                
+                // Vignette effect (simulated peripheral vision loss)
                 GeometryReader { geo in
                     let maxRadius = hypot(geo.size.width, geo.size.height) / 2
                     let clearRadius = maxRadius * (1.0 - intensity)
                     let blurWidth: CGFloat = 60
-
-                    let clearFrac = max(min(clearRadius / maxRadius, 1), 0)
-                    let blurFracEnd = max(min((clearRadius + blurWidth) / maxRadius, 1), 0)
-
+                    
+                    let clearFrac = (clearRadius / maxRadius)
+                    let blurFracEnd = ((clearRadius + blurWidth) / maxRadius)
+                    
+                    let cFrac = min(max(clearFrac, 0), 1)
+                    let bFrac = min(max(blurFracEnd, 0), 1)
+                    
                     RadialGradient(
                         gradient: Gradient(stops: [
-                            .init(color: .clear,  location: 0.0),
-                            .init(color: .clear,  location: clearFrac),
-                            .init(color: .black,  location: blurFracEnd),
-                            .init(color: .black,  location: 1.0)
+                            .init(color: .clear, location: 0.0),
+                            .init(color: .clear, location: cFrac),
+                            .init(color: .black, location: bFrac),
+                            .init(color: .black, location: 1.0)
                         ]),
                         center: .center,
                         startRadius: 0,
@@ -110,31 +37,31 @@ struct GlaucomaImmersiveOverlay: View {
                     .ignoresSafeArea()
                     .blendMode(.multiply)
                 }
-
-                // Controls
+                
+                // UI Controls
                 VStack {
                     Spacer()
+                    
                     Slider(value: $intensity, in: 0...1) {
                         Text("Peripheral Vision Loss")
                     }
                     .padding()
                     .background(.ultraThinMaterial)
-                    .cornerRadius(10)
-                    .frame(maxWidth: 420)
-
+                    .cornerRadius(8)
+                    .frame(maxWidth: 400)
+                    
                     Text("Peripheral vision loss: \(Int(intensity * 100))%")
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.85))
+                        .padding(.top, 8)
                         .padding(.bottom, 8)
                 }
-                .padding(.bottom, 80)
-
-                // Optional: a back button that dismisses the immersive space
+                .padding(.bottom, 75)
+                
+                // Back button - placed independently in top-left corner
                 VStack {
                     HStack {
-                        Button("Back") { dismiss() }
-                            .buttonStyle(.borderedProminent)
-                            .tint(.gray)
+                        BackToHomeButton()
                             .padding(.top, geometry.safeAreaInsets.top + 12)
                             .padding(.leading, 20)
                         Spacer()
@@ -146,3 +73,4 @@ struct GlaucomaImmersiveOverlay: View {
         }
     }
 }
+
