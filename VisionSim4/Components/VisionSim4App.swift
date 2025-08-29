@@ -23,7 +23,6 @@ struct VisionSim4App: App {
         case cataractsInteractive
         case diabeticRetinopathyInteractive
         case diabeticRetinopathyLive
-        case eye
     }
     
     /// Common sizes to keep window layouts consistent across scenes.
@@ -119,7 +118,7 @@ struct VisionSim4App: App {
         
         // MARK: - Models
         // Loads a specific .usdz eye model if provided; falls back to a default.
-        WindowGroup(id: SceneID.eye.rawValue, for: String.self) { $modelName in
+        WindowGroup(id: "Eye", for: String.self) { $modelName in
             Eye(modelName: modelName ?? "EyeModel")
         }
         .windowStyle(.plain)

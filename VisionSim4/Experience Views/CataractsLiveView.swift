@@ -167,3 +167,4 @@ private struct CataractNoiseLayer: View {
         }
     }
 }
+
