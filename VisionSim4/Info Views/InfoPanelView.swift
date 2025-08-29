@@ -1,124 +1,131 @@
 import SwiftUI
 
+/// Panel that shows educational content for a specific impairment.
+/// Uses a simple top bar and a stack of glassy info cards.
 struct InfoPanelView: View {
     let impairment: VisionImpairment
     @Environment(\.dismiss) private var dismiss
 
+    // Accent color keyed to the selected impairment
+    private var accent: Color {
+        switch impairment {
+        case .macularDegeneration: return .orange
+        case .glaucoma:            return .teal
+        case .cataracts:           return .yellow
+        case .diabeticRetinopathy: return .red
+        }
+    }
+
+    // SF Symbol to visually differentiate sections by impairment
+    private var iconName: String {
+        switch impairment {
+        case .macularDegeneration: return "circle.lefthalf.filled"
+        case .glaucoma:            return "eye.trianglebadge.exclamationmark"
+        case .cataracts:           return "aqi.medium"
+        case .diabeticRetinopathy: return "circle.dotted"
+        }
+    }
+
     var body: some View {
         ZStack {
-            VStack {
-                // Top Bar with Back and Done
+            // Dim layer to help the sheet pop against busy backgrounds
+            Color.black.opacity(0.2).ignoresSafeArea()
+
+            // Main sheet container
+            VStack(spacing: 0) {
+                // Top bar with symmetrical Back/Done actions
                 HStack {
-                    BackToHomeButton()
-                        .padding(.leading, 20)
-                        .padding(.top, 20)
-
+                    Button("Back") { dismiss() }
+                        .buttonStyle(TopBarButton(accent: accent))
                     Spacer()
-
-                    Button("Done") {
-                        dismiss()
-                    }
-                    .padding(.trailing, 20)
-                    .padding(.top, 20)
+                    Button("Done") { dismiss() }
+                        .buttonStyle(TopBarButton(accent: accent))
                 }
+                .padding(.horizontal, 32)
+                .padding(.top, 24)
 
-                Spacer()
-
-                // Main Info Panel Content
-                VStack(spacing: 25) {
-                    Text("About \(impairment.rawValue)")
-                        .font(.title2)
-                        .bold()
-                        .multilineTextAlignment(.center)
-
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(.ultraThinMaterial)
-                            .shadow(radius: 10)
-                            .frame(maxWidth: 500)
-
-                        ScrollView {
-                            VStack(alignment: .leading, spacing: 20) {
-                                Group {
-                                    Text("Overview").font(.headline)
-                                    Text(overviewText(for: impairment))
-
-                                    Text("Symptoms").font(.headline)
-                                    Text(symptomsText(for: impairment))
-
-                                    Text("Treatment").font(.headline)
-                                    Text(treatmentText(for: impairment))
-
-                                    Text("Risk Factors").font(.headline)
-                                    Text(riskFactorsText(for: impairment))
-                                }
+                // Scrollable content area
+                ScrollView {
+                    VStack(spacing: 32) {
+                        // Header: icon, title, short blurb
+                        VStack(spacing: 12) {
+                            ZStack {
+                                Circle()
+                                    .fill(accent.gradient)
+                                    .frame(width: 70, height: 70)
+                                Image(systemName: iconName)
+                                    .font(.system(size: 30, weight: .semibold))
+                                    .foregroundStyle(.white)
                             }
-                            .font(.body)
-                            .foregroundStyle(.primary)
-                            .padding()
-                            .frame(maxWidth: 450, alignment: .leading)
+
+                            Text(impairment.rawValue)
+                                .font(.largeTitle.bold())
+                                .foregroundStyle(.primary)
+
+                            Text("Learn about causes, symptoms, treatments, and risk factors")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: 480)
                         }
+                        .padding(.top, 8)
+
+                        // Content blocks pulled from the impairment’s computed properties
+                        InfoCard(title: "Overview",     text: impairment.overview,     accent: accent)
+                        InfoCard(title: "Symptoms",     text: impairment.symptoms,     accent: accent)
+                        InfoCard(title: "Treatment",    text: impairment.treatment,    accent: accent)
+                        InfoCard(title: "Risk Factors", text: impairment.riskFactors,  accent: accent)
                     }
-                    .padding(.top)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 40)
                 }
-
-                Spacer()
             }
-            .padding()
         }
     }
+}
 
-    // MARK: - Text Generators
+// MARK: - Components
 
-    func overviewText(for impairment: VisionImpairment) -> String {
-        switch impairment {
-        case .glaucoma:
-            return "Glaucoma is a group of eye conditions that damage the optic nerve, often due to high eye pressure..."
-        case .cataracts:
-            return "Cataracts occur when the lens of the eye becomes cloudy, leading to blurred vision..."
-        case .macularDegeneration:
-            return "Macular degeneration affects the central retina, causing central vision loss..."
-        case .diabeticRetinopathy:
-            return "Diabetic retinopathy is a complication of diabetes that damages the retina's blood vessels..."
+/// Reusable glass card for a titled text section
+private struct InfoCard: View {
+    let title: String
+    let text: String
+    let accent: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "circle.fill")
+                    .font(.system(size: 10))
+                    .foregroundStyle(accent)
+                Text(title)
+                    .font(.headline.weight(.semibold))
+            }
+            Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
+                .font(.body)
+                .lineSpacing(3)
+                .foregroundStyle(.primary)
         }
+        .padding(20)
+        .frame(maxWidth: 700, alignment: .leading)
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .shadow(color: .black.opacity(0.08), radius: 10, y: 5)
     }
+}
 
-    func symptomsText(for impairment: VisionImpairment) -> String {
-        switch impairment {
-        case .glaucoma:
-            return "Gradual peripheral vision loss, tunnel vision, eye pain, and blurred vision."
-        case .cataracts:
-            return "Cloudy or blurry vision, faded colors, glare or halos around lights, poor night vision."
-        case .macularDegeneration:
-            return "Blurred or reduced central vision, difficulty recognizing faces, straight lines appearing wavy."
-        case .diabeticRetinopathy:
-            return "Floaters, blurred vision, impaired color vision, dark or empty areas, vision loss."
-        }
-    }
-
-    func treatmentText(for impairment: VisionImpairment) -> String {
-        switch impairment {
-        case .glaucoma:
-            return "Prescription eye drops, oral medications, laser therapy, or surgery."
-        case .cataracts:
-            return "Surgery to replace the cloudy lens with a clear artificial one."
-        case .macularDegeneration:
-            return "Anti-VEGF injections, laser therapy, dietary supplements, and vision aids."
-        case .diabeticRetinopathy:
-            return "Blood sugar control, anti-VEGF therapy, laser treatment, and vitrectomy surgery."
-        }
-    }
-
-    func riskFactorsText(for impairment: VisionImpairment) -> String {
-        switch impairment {
-        case .glaucoma:
-            return "Age over 60, family history, high eye pressure, diabetes, and certain ethnicities."
-        case .cataracts:
-            return "Aging, diabetes, smoking, prolonged sun exposure, alcohol use."
-        case .macularDegeneration:
-            return "Age over 50, smoking, obesity, high blood pressure, family history."
-        case .diabeticRetinopathy:
-            return "Diabetes duration, poor control, high blood pressure, cholesterol, pregnancy, smoking."
-        }
+/// Rounded capsule button style used in the top bar
+private struct TopBarButton: ButtonStyle {
+    var accent: Color
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(accent.opacity(configuration.isPressed ? 0.6 : 0.8))
+            .foregroundStyle(.white)
+            .clipShape(Capsule())
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: configuration.isPressed)
     }
 }

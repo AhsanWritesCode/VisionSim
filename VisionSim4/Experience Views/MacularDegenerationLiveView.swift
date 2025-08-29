@@ -1,30 +1,34 @@
 import SwiftUI
 
+/// Live overlay for simulating macular degeneration.
+/// Creates a layered set of blurred circles in the center of the view
+/// to mimic progressive central vision loss while keeping the periphery clear.
 struct MacularDegenerationLiveView: View {
-    @State private var intensity: CGFloat = 0.0  // 0 = clear, 1 = full effect
+    @State private var intensity: CGFloat = 0.0  // 0 = clear, 1 = maximum effect
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                // Transparent base so the real-world scene shows through
                 Color.clear.ignoresSafeArea()
                 
-                // Simulated central blur using layered blurred circles
+                // Layered blurred circles forming a soft central blackout
                 ZStack {
                     ForEach(0..<6) { i in
                         let level = CGFloat(i)
                         let totalLevels: CGFloat = 6
-                        let radius = 100 + (level * 60)
-                        let opacity = (intensity * (1.0 - level / totalLevels)) * 1
+                        let radius = 100 + (level * 60)   // increasing circle size
+                        let opacity = intensity * (1.0 - level / totalLevels)
                         
                         Circle()
                             .fill(Color.black.opacity(opacity))
                             .frame(width: radius, height: radius)
-                            .blur(radius: 20)
+                            .blur(radius: 20)              // smooth transitions
                             .allowsHitTesting(false)
                     }
                 }
                 
-                // UI controls
+                // --- Controls ---
                 VStack {
                     Spacer()
                     
@@ -40,12 +44,11 @@ struct MacularDegenerationLiveView: View {
                     Text("Central vision loss: \(Int(intensity * 100))%")
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.85))
-                        .padding(.top, 8)
-                        .padding(.bottom, 8)
+                        .padding(.vertical, 8)
                 }
                 .padding(.bottom, 30)
                 
-                // Back button - placed independently in top-left corner
+                // Back button pinned to top-left corner
                 VStack {
                     HStack {
                         BackToHomeButton()

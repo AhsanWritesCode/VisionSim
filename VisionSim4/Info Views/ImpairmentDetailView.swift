@@ -1,158 +1,150 @@
 import SwiftUI
 
-//struct ImpairmentDetailView: View {
-//    @Environment(\.openWindow) private var openWindow
-//    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
-//    @EnvironmentObject var appState: AppState
-//
-//    let impairment: VisionImpairment
-//
-//    @State private var showExperienceInstructions = false
-//    @State private var experienceWindowToOpen: String?
-//    @State private var isImmersiveExperience = false
-//
-//    // MARK: - Image sets (unchanged for now)
-//    var normalImages: [String] {
-//        switch impairment {
-//        case .macularDegeneration: return ["md_scene_park", "md_scene_street", "md_scene_office"]
-//        case .glaucoma: return ["gl_scene_park", "gl_scene_street", "gl_scene_office"]
-//        case .cataracts: return ["cat_scene_park", "cat_scene_street", "cat_scene_office"]
-//        case .diabeticRetinopathy: return ["dr_scene_park", "dr_scene_street", "dr_scene_office"]
-//        }
-//    }
-//    var impairedImages: [String] {
-//        switch impairment {
-//        case .macularDegeneration: return ["md_scene_park_impaired", "md_scene_street_impaired", "md_scene_office_impaired"]
-//        case .glaucoma: return ["gl_scene_park_impaired", "gl_scene_street_impaired", "gl_scene_office_impaired"]
-//        case .cataracts: return ["cat_scene_park_impaired", "cat_scene_street_impaired", "cat_scene_office_impaired"]
-//        case .diabeticRetinopathy: return ["dr_scene_park_impaired", "dr_scene_street_impaired", "dr_scene_office_impaired"]
-//        }
-//    }
-//
-//    // MARK: - Per-impairment content
-//    private var iconName: String {
-//        switch impairment {
-//        case .macularDegeneration: return "circle.lefthalf.filled"
-//        case .glaucoma:            return "eye.trianglebadge.exclamationmark"
-//        case .cataracts:           return "aqi.medium"
-//        case .diabeticRetinopathy: return "circle.dotted"
-//        }
-//    }
-//    private var color: Color {
-//        switch impairment {
-//        case .macularDegeneration: return .orange
-//        case .glaucoma:            return .teal
-//        case .cataracts:           return .yellow
-//        case .diabeticRetinopathy: return .red
-//        }
-//    }
-//
-//    // Window IDs for interactive + live views
-//    private var interactiveWindowID: String {
-//        switch impairment {
-//        case .macularDegeneration: return "macularDegenerationInteractive"
-//        case .glaucoma:            return "glaucomaInteractive"
-//        case .cataracts:           return "cataractsInteractive"
-//        case .diabeticRetinopathy: return "diabeticRetinopathyInteractive"
-//        }
-//    }
-//    private var liveWindowID: String? {
-//        switch impairment {
-//        case .macularDegeneration: return "macularDegenerationOverlay"
-//        case .glaucoma:            return "glaucomaImmersive"
-//        case .cataracts:           return "cataractsOverlay"
-//        case .diabeticRetinopathy: return "diabeticRetinopathyLive"
-//        }
-//    }
-//
-//    var body: some View {
-//        ScrollView {  // smoother on small windows; removes hard edges
-//            VStack(spacing: 28) {
-//
-//                // HEADER
-//                VStack(spacing: 6) {
-//                    HStack(spacing: 12) {
-//                        ZStack {
-//                            Circle().fill(color.opacity(0.2))
-//                            Image(systemName: iconName)
-//                                .font(.system(size: 22, weight: .semibold))
-//                                .foregroundStyle(color)
-//                        }
-//                        .frame(width: 40, height: 40)
-//
-//                        Text(impairment.rawValue)
-//                            .font(.system(.largeTitle, design: .rounded).weight(.bold))
-//                        Spacer(minLength: 0)
-//                    }
-//                    Text(subtitle(for: impairment))
-//                        .font(.callout)
-//                        .foregroundStyle(.secondary)
-//                        .frame(maxWidth: .infinity, alignment: .leading)
-//                }
-//
-//                // CARDS
-//                ActionCard(
-//                    title: "Interactive Visualization",
-//                    subtitle: "Use preset photos. Adjust severity with a slider and compare normal vs affected vision.",
-//                    icon: "slider.horizontal.3",
-//                    accent: color
-//                ) {
-//                    experienceWindowToOpen = interactiveWindowID
-//                    showExperienceInstructions = true
-//                }
-//
-//                if let liveID = liveWindowID {
-//                    ActionCard(
-//                        title: "Real-World Overlay",
-//                        subtitle: "Apply the effect to your surroundings for an in-situ experience.",
-//                        icon: "viewfinder",
-//                        accent: color
-//                    ) {
-//                        // open directly for live overlays (no instructions sheet)
-//                        appState.selectedImpairment = impairment   // ✅ ensure correct impairment (fixes old cataracts bug)
-//                        openWindow(id: liveID)
-//                    }
-//                }
-//
-//                // OPTIONAL: quick tip
-//                TipRow(text: "You can reposition the window to different backgrounds to see how lighting changes the effect.")
-//
-//                Spacer(minLength: 8)
-//            }
-//            .padding(28)
-//        }
-//        .sheet(isPresented: $showExperienceInstructions) {
-//            InstructionSheet(
-//                startTapped: {
-//                    showExperienceInstructions = false
-//                    appState.selectedImpairment = impairment
-//                    if isImmersiveExperience {
-//                        Task {
-//                            await openImmersiveSpace(id: "glaucomaImmersive")
-//                            isImmersiveExperience = false
-//                        }
-//                    } else if let id = experienceWindowToOpen {
-//                        openWindow(id: id)
-//                    }
-//                },
-//                accent: color
-//            )
-//            .presentationDetents([.medium])
-//        }
-//    }
-//
-//    // concise per-impairment blurb
-//    private func subtitle(for i: VisionImpairment) -> String {
-//        switch i {
-//        case .macularDegeneration: return "Explore central vision loss and its impact on reading and face recognition."
-//        case .glaucoma:            return "Experience peripheral field loss and tunnel vision effects."
-//        case .cataracts:           return "See how haze, diffusion, and reduced contrast affect everyday scenes."
-//        case .diabeticRetinopathy: return "Simulate floaters, blotches, and fluctuating clarity."
-//        }
-//    }
-//}
+struct ImpairmentDetailView: View {
+    @Environment(\.openWindow) private var openWindow
+    @EnvironmentObject var appState: AppState
 
-// Glassy card with subtle depth, icon, and primary action button
+    let impairment: VisionImpairment
+
+    @State private var showExperienceInstructions = false
+    @State private var experienceWindowToOpen: String?
+
+    // MARK: - Per-impairment UI
+    /// SF Symbol chosen per impairment for a quick visual cue
+    private var iconName: String {
+        switch impairment {
+        case .macularDegeneration: return "circle.lefthalf.filled"
+        case .glaucoma:            return "eye.trianglebadge.exclamationmark"
+        case .cataracts:           return "aqi.medium"
+        case .diabeticRetinopathy: return "circle.dotted"
+        }
+    }
+    /// Accent color per impairment to keep the theme consistent
+    private var color: Color {
+        switch impairment {
+        case .macularDegeneration: return .orange
+        case .glaucoma:            return .teal
+        case .cataracts:           return .yellow
+        case .diabeticRetinopathy: return .red
+        }
+    }
+
+    // Window IDs for the image-based interactive views
+    private var interactiveWindowID: String {
+        switch impairment {
+        case .macularDegeneration: return "macularDegenerationInteractive"
+        case .glaucoma:            return "glaucomaInteractive"
+        case .cataracts:           return "cataractsInteractive"
+        case .diabeticRetinopathy: return "diabeticRetinopathyInteractive"
+        }
+    }
+
+    // Window IDs for the live “real-world overlay” views
+    private var liveWindowID: String {
+        switch impairment {
+        case .macularDegeneration: return "macularDegenerationOverlay"
+        case .glaucoma:            return "glaucomaLiveOverlay"
+        case .cataracts:           return "cataractsOverlay"
+        case .diabeticRetinopathy: return "diabeticRetinopathyLive"
+        }
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 28) {
+                // Header: icon + name + short blurb
+                VStack(spacing: 6) {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle().fill(color.opacity(0.2))
+                            Image(systemName: iconName)
+                                .font(.system(size: 22, weight: .semibold))
+                                .foregroundStyle(color)
+                        }
+                        .frame(width: 40, height: 40)
+
+                        Text(impairment.rawValue)
+                            .font(.system(.largeTitle, design: .rounded).weight(.bold))
+                        Spacer()
+                    }
+                    Text(subtitle(for: impairment))
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+
+                // Educational content: opens a dedicated info panel
+                ActionCard(
+                    title: "Learn About \(impairment.rawValue)",
+                    subtitle: "Causes, symptoms, treatments, risk factors, and everyday challenges.",
+                    icon: "text.book.closed.fill",
+                    accent: color
+                ) {
+                    appState.selectedImpairment = impairment
+                    // Using the raw string ID so this view doesn’t depend on the App’s enum
+                    openWindow(id: "infoPanel")
+                }
+
+                // Image-based interactive preview (with slider etc.)
+                ActionCard(
+                    title: "Interactive Visualization",
+                    subtitle: "Use preset photos. Adjust severity with a slider and compare normal vs affected vision.",
+                    icon: "slider.horizontal.3",
+                    accent: color
+                ) {
+                    experienceWindowToOpen = interactiveWindowID
+                    showExperienceInstructions = true
+                }
+
+                // Live overlay version: applies the effect over the current environment
+                ActionCard(
+                    title: "Real-World Overlay",
+                    subtitle: "Apply the effect to your surroundings for an in-situ experience.",
+                    icon: "viewfinder",
+                    accent: color
+                ) {
+                    appState.selectedImpairment = impairment
+                    openWindow(id: liveWindowID)
+                }
+
+                // Small UX nudge
+                TipRow(text: "You can reposition the window to different backgrounds to see how lighting changes the effect.")
+                Spacer(minLength: 8)
+            }
+            .padding(28)
+        }
+        // Simple pre-flight sheet before launching the interactive window
+        .sheet(isPresented: $showExperienceInstructions) {
+            InstructionSheet(
+                startTapped: {
+                    showExperienceInstructions = false
+                    appState.selectedImpairment = impairment
+                    if let id = experienceWindowToOpen { openWindow(id: id) }
+                },
+                accent: color
+            )
+            #if os(visionOS)
+            .presentationDetents([.fraction(0.45)])
+            #else
+            .presentationDetents([.medium])
+            #endif
+        }
+    }
+
+    /// Short description tailored to each impairment
+    private func subtitle(for i: VisionImpairment) -> String {
+        switch i {
+        case .macularDegeneration: return "Explore central vision loss and its impact on reading and face recognition."
+        case .glaucoma:            return "Experience peripheral field loss and tunnel vision effects."
+        case .cataracts:           return "See how haze, diffusion, and reduced contrast affect everyday scenes."
+        case .diabeticRetinopathy: return "Simulate floaters, blotches, and fluctuating clarity."
+        }
+    }
+}
+
+
+/// Glassy card with icon, copy, and a single primary action.
+/// Used for “Learn”, “Interactive”, and “Overlay” actions above.
 struct ActionCard: View {
     let title: String
     let subtitle: String
@@ -205,6 +197,7 @@ struct ActionCard: View {
     }
 }
 
+/// Small helper row for nudges/tips under the action stack.
 struct TipRow: View {
     let text: String
     var body: some View {
@@ -219,7 +212,8 @@ struct TipRow: View {
     }
 }
 
-// Polished primary button
+/// Primary button style used across the cards.
+/// Slight glass effect with a subtle press animation.
 struct FilledGlassButtonStyle: ButtonStyle {
     var accent: Color = .blue
     func makeBody(configuration: Configuration) -> some View {
@@ -241,7 +235,7 @@ struct FilledGlassButtonStyle: ButtonStyle {
     }
 }
 
-
+/// One-time instruction sheet shown before launching an experience.
 struct InstructionSheet: View {
     let startTapped: () -> Void
     var accent: Color
@@ -287,135 +281,6 @@ struct InstructionSheet: View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(.ultraThinMaterial)
         )
-        .presentationBackground(.clear) // keeps the sheet glassy over your window
+        .presentationBackground(.clear) // keeps the sheet glassy over the underlying window
     }
 }
-// ImpairmentDetailView.swift
-import SwiftUI
-
-struct ImpairmentDetailView: View {
-    @Environment(\.openWindow) private var openWindow
-    @EnvironmentObject var appState: AppState
-
-    let impairment: VisionImpairment
-
-    @State private var showExperienceInstructions = false
-    @State private var experienceWindowToOpen: String?
-
-    // MARK: - Per-impairment UI
-    private var iconName: String {
-        switch impairment {
-        case .macularDegeneration: return "circle.lefthalf.filled"
-        case .glaucoma:            return "eye.trianglebadge.exclamationmark"
-        case .cataracts:           return "aqi.medium"
-        case .diabeticRetinopathy: return "circle.dotted"
-        }
-    }
-    private var color: Color {
-        switch impairment {
-        case .macularDegeneration: return .orange
-        case .glaucoma:            return .teal
-        case .cataracts:           return .yellow
-        case .diabeticRetinopathy: return .red
-        }
-    }
-
-    // Interactive window ids
-    private var interactiveWindowID: String {
-        switch impairment {
-        case .macularDegeneration: return "macularDegenerationInteractive"
-        case .glaucoma:            return "glaucomaInteractive"
-        case .cataracts:           return "cataractsInteractive"
-        case .diabeticRetinopathy: return "diabeticRetinopathyInteractive"
-        }
-    }
-
-    // Live “real-world overlay” window ids
-    private var liveWindowID: String {
-        switch impairment {
-        case .macularDegeneration: return "macularDegenerationOverlay"
-        case .glaucoma:            return "glaucomaLiveOverlay"
-        case .cataracts:           return "cataractsOverlay"
-        case .diabeticRetinopathy: return "diabeticRetinopathyLive"
-        }
-    }
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 28) {
-                // Header
-                VStack(spacing: 6) {
-                    HStack(spacing: 12) {
-                        ZStack {
-                            Circle().fill(color.opacity(0.2))
-                            Image(systemName: iconName)
-                                .font(.system(size: 22, weight: .semibold))
-                                .foregroundStyle(color)
-                        }
-                        .frame(width: 40, height: 40)
-
-                        Text(impairment.rawValue)
-                            .font(.system(.largeTitle, design: .rounded).weight(.bold))
-                        Spacer()
-                    }
-                    Text(subtitle(for: impairment))
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-
-                // Interactive card (preset images)
-                ActionCard(
-                    title: "Interactive Visualization",
-                    subtitle: "Use preset photos. Adjust severity with a slider and compare normal vs affected vision.",
-                    icon: "slider.horizontal.3",
-                    accent: color
-                ) {
-                    experienceWindowToOpen = interactiveWindowID
-                    showExperienceInstructions = true
-                }
-
-                // Real-world overlay (window)
-                ActionCard(
-                    title: "Real-World Overlay",
-                    subtitle: "Apply the effect to your surroundings for an in-situ experience.",
-                    icon: "viewfinder",
-                    accent: color
-                ) {
-                    appState.selectedImpairment = impairment
-                    openWindow(id: liveWindowID)   // ← back to windows
-                }
-
-                TipRow(text: "You can reposition the window to different backgrounds to see how lighting changes the effect.")
-                Spacer(minLength: 8)
-            }
-            .padding(28)
-        }
-        .sheet(isPresented: $showExperienceInstructions) {
-            InstructionSheet(
-                startTapped: {
-                    showExperienceInstructions = false
-                    appState.selectedImpairment = impairment
-                    if let id = experienceWindowToOpen { openWindow(id: id) }
-                },
-                accent: color
-            )
-            #if os(visionOS)
-            .presentationDetents([.fraction(0.45)])
-            #else
-            .presentationDetents([.medium])
-            #endif
-        }
-    }
-
-    private func subtitle(for i: VisionImpairment) -> String {
-        switch i {
-        case .macularDegeneration: return "Explore central vision loss and its impact on reading and face recognition."
-        case .glaucoma:            return "Experience peripheral field loss and tunnel vision effects."
-        case .cataracts:           return "See how haze, diffusion, and reduced contrast affect everyday scenes."
-        case .diabeticRetinopathy: return "Simulate floaters, blotches, and fluctuating clarity."
-        }
-    }
-}
-
-// ——— your ActionCard / TipRow / FilledGlassButtonStyle / InstructionSheet components from earlier remain unchanged ———

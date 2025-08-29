@@ -1,58 +1,124 @@
-// Cataracts Interactive View
-
 import SwiftUI
+
+// Interactive cataract preset (uses static image + same layers as live view)
 
 struct CataractsInteractiveView: View {
     @Environment(\.dismiss) private var dismiss
-    
     @State private var intensity: CGFloat = 0.0
     let imageName: String
-    
+
+    // Tuned constants to match the “live” cataract overlay
+    private let maxDesat: CGFloat       = 0.55
+    private let darken: CGFloat         = 0.10
+    private let yellowing: CGFloat      = 0.35
+    private let bloomStrength: CGFloat  = 0.12
+    private let hazeStrength: CGFloat   = 0.16
+
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { geo in
             ZStack {
-                // Background with cataracts effect
+                // Background photo
                 Image(imageName)
                     .resizable()
                     .scaledToFill()
-                    .saturation(1.0 - (intensity * 0.5))
-                    .blur(radius: intensity * 10)
-                    .brightness(-intensity * 0.1)
                     .ignoresSafeArea()
-                
-                // UI controls
+
+                // 1) Desaturation layer
+                Rectangle()
+                    .fill(.gray)
+                    .opacity(intensity * maxDesat)
+                    .blendMode(.saturation)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+
+                // 2) Mild darkening
+                Rectangle()
+                    .fill(.black)
+                    .opacity(intensity * darken)
+                    .blendMode(.multiply)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+
+                // 3) Yellow tint overlay
+                Rectangle()
+                    .fill(Color(red: 1.0, green: 0.94, blue: 0.70))
+                    .opacity(intensity * yellowing)
+                    .blendMode(.color)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+
+                // 4) Bloom/diffusion simulation
+                Canvas { ctx, size in
+                    guard intensity > 0 else { return }
+                    let rBase: CGFloat = 180 + 240 * intensity
+                    let blur: CGFloat  = 18 + 40 * intensity
+                    let alpha: CGFloat = bloomStrength * intensity
+
+                    ctx.addFilter(.blur(radius: blur))
+                    ctx.blendMode = .overlay
+
+                    let centers = [
+                        CGPoint(x: size.width * 0.25, y: size.height * 0.30),
+                        CGPoint(x: size.width * 0.72, y: size.height * 0.28),
+                        CGPoint(x: size.width * 0.44, y: size.height * 0.72),
+                        CGPoint(x: size.width * 0.80, y: size.height * 0.62)
+                    ]
+                    for c in centers {
+                        let rect = CGRect(x: c.x - rBase, y: c.y - rBase,
+                                          width: rBase * 2, height: rBase * 2)
+                        ctx.fill(Path(ellipseIn: rect), with: .color(.white.opacity(alpha)))
+                    }
+                }
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
+
+                // 5) Animated patchy haze layer
+                TimelineView(.animation) { tl in
+                    CataractNoiseLayer(intensity: intensity,
+                                       time: tl.date.timeIntervalSinceReferenceDate,
+                                       strength: hazeStrength)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
+                }
+
+                // 6) Gentle edge darkening
+                RadialGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: .clear,                           location: 0.0),
+                        .init(color: .black.opacity(0.05 * intensity), location: 0.75),
+                        .init(color: .black.opacity(0.10 * intensity), location: 1.00),
+                    ]),
+                    center: .center,
+                    startRadius: 0,
+                    endRadius: max(geo.size.width, geo.size.height)
+                )
+                .blendMode(.multiply)
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
+
+                // --- Controls ---
                 VStack {
                     Spacer()
-                    
-                    // Slider
                     Slider(value: $intensity, in: 0...1) {
-                        Text("Intensity")
+                        Text("Cataract Severity")
                     }
                     .padding()
                     .background(.ultraThinMaterial)
-                    .cornerRadius(10)
-                    .frame(maxWidth: 400)
-                    
-                    
-                    // Intensity label
+                    .cornerRadius(12)
+                    .frame(maxWidth: 420)
+
                     Text("Vision distortion: \(Int(intensity * 100))%")
                         .font(.subheadline)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(.ultraThinMaterial) // Adds blurred background for contrast
-                        .cornerRadius(10)
-                        .foregroundColor(.primary) // Adapts to light/dark modes
-                    
-                    
+                        .foregroundStyle(.primary)
+                        .padding(.bottom, 8)
                 }
-                .padding(.bottom, 150)
-                
-                
-                // Back button - placed independently in top-left corner
+                .padding(.bottom, 120)
+
+                // Back button pinned in top-left corner
                 VStack {
                     HStack {
                         BackToHomeButton()
-                            .padding(.top, geometry.safeAreaInsets.top + 12)
+                            .padding(.top, geo.safeAreaInsets.top + 12)
                             .padding(.leading, 20)
                         Spacer()
                     }
@@ -63,3 +129,57 @@ struct CataractsInteractiveView: View {
         }
     }
 }
+
+
+// --- Reusable animated haze layer (same logic as live cataract view) ---
+private struct CataractNoiseLayer: View {
+    let intensity: CGFloat
+    let time: TimeInterval
+    let strength: CGFloat
+
+    var body: some View {
+        Canvas { ctx, size in
+            guard intensity > 0 else { return }
+            let alpha = strength * intensity
+
+            ctx.addFilter(.blur(radius: 30 + 30 * intensity))
+            ctx.blendMode = .screen
+
+            let w = size.width, h = size.height
+            let t = CGFloat(time)
+
+            // Moving “patches” across the screen
+            let k1 = CGPoint(x: w * (0.35 + 0.05 * sin(t * 0.17)),
+                             y: h * (0.30 + 0.06 * cos(t * 0.21)))
+            let k2 = CGPoint(x: w * (0.70 + 0.04 * cos(t * 0.14)),
+                             y: h * (0.65 + 0.05 * sin(t * 0.19)))
+            let k3 = CGPoint(x: w * (0.20 + 0.06 * sin(t * 0.11)),
+                             y: h * (0.72 + 0.04 * cos(t * 0.16)))
+            let k4 = CGPoint(x: w * (0.82 + 0.03 * cos(t * 0.23)),
+                             y: h * (0.28 + 0.05 * sin(t * 0.13)))
+
+            let r: CGFloat = max(w, h) * (0.22 + 0.28 * intensity)
+            for c in [k1, k2, k3, k4] {
+                let rect = CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2)
+                ctx.fill(Path(ellipseIn: rect), with: .color(.white.opacity(alpha)))
+            }
+
+            // Optional faint radial “spokes” for high severity
+            if intensity > 0.6 {
+                ctx.blendMode = .overlay
+                let center = CGPoint(x: w * 0.5, y: h * 0.5)
+                let spokes = 6
+                let len: CGFloat = max(w, h)
+                for i in 0..<spokes {
+                    let a = CGFloat(i) * .pi * 2 / CGFloat(spokes)
+                    var path = Path()
+                    path.move(to: center)
+                    path.addLine(to: CGPoint(x: center.x + cos(a) * len,
+                                             y: center.y + sin(a) * len))
+                    ctx.stroke(path, with: .color(.white.opacity(0.02 * intensity)), lineWidth: 8)
+                }
+            }
+        }
+    }
+}
+

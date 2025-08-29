@@ -1,25 +1,28 @@
 import SwiftUI
 
+/// Live glaucoma overlay that simulates peripheral vision loss
+/// by applying a dark vignette directly over the user’s environment.
 struct GlaucomaLiveView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var intensity: CGFloat = 0.0   // 0 = no blackout, 1 = full blackout
+    @State private var intensity: CGFloat = 0.0   // 0 = clear, 1 = full blackout
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Transparent background (lets environment show through)
+                // Transparent base so the environment remains visible
                 Color.clear
                     .ignoresSafeArea()
                 
-                // Vignette effect (simulated peripheral vision loss)
+                // Radial gradient vignette that grows inward as intensity increases
                 GeometryReader { geo in
                     let maxRadius = hypot(geo.size.width, geo.size.height) / 2
-                    let clearRadius = maxRadius * (1.0 - intensity)
-                    let blurWidth: CGFloat = 60
+                    let clearRadius = maxRadius * (1.0 - intensity) // fully visible center
+                    let blurWidth: CGFloat = 60                    // soft transition edge
                     
-                    let clearFrac = (clearRadius / maxRadius)
-                    let blurFracEnd = ((clearRadius + blurWidth) / maxRadius)
+                    let clearFrac = clearRadius / maxRadius
+                    let blurFracEnd = (clearRadius + blurWidth) / maxRadius
                     
+                    // Clamp values so they don’t go out of range
                     let cFrac = min(max(clearFrac, 0), 1)
                     let bFrac = min(max(blurFracEnd, 0), 1)
                     
@@ -35,10 +38,10 @@ struct GlaucomaLiveView: View {
                         endRadius: maxRadius
                     )
                     .ignoresSafeArea()
-                    .blendMode(.multiply)
+                    .blendMode(.multiply) // darkens environment outside the clear zone
                 }
                 
-                // UI Controls
+                // --- Controls ---
                 VStack {
                     Spacer()
                     
@@ -53,12 +56,11 @@ struct GlaucomaLiveView: View {
                     Text("Peripheral vision loss: \(Int(intensity * 100))%")
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.85))
-                        .padding(.top, 8)
-                        .padding(.bottom, 8)
+                        .padding(.vertical, 8)
                 }
                 .padding(.bottom, 75)
                 
-                // Back button - placed independently in top-left corner
+                // Back button pinned to top-left corner
                 VStack {
                     HStack {
                         BackToHomeButton()
@@ -73,4 +75,3 @@ struct GlaucomaLiveView: View {
         }
     }
 }
-

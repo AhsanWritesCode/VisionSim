@@ -1,25 +1,25 @@
-// Macular Degeneration Interactive View
-
 import SwiftUI
 
+/// Interactive preset view for simulating macular degeneration.
+/// Uses a blurred duplicate of the background image masked to the center
+/// to mimic progressive central vision loss.
 struct MacularDegenerationInteractiveView: View {
-    // drive how strong central blur is (0…80)
+    // Amount of blur in the center (0 = clear, 80 = fully blurred)
     @State private var blurAmount: CGFloat = 0
     
-    // The name of the background image
+    // Background photo name (e.g. park, street, office)
     var imageName: String = "md_scene_park"
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Base image
+                // Base background image
                 Image(imageName)
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
                 
-                
-                // Blurred overlay masked to the center of the image
+                // Blurred duplicate, masked to the center of the image
                 Image(imageName)
                     .resizable()
                     .scaledToFill()
@@ -39,11 +39,11 @@ struct MacularDegenerationInteractiveView: View {
                     )
                     .allowsHitTesting(false)
                 
-                // UI elements
+                // --- Controls ---
                 VStack {
                     Spacer()
                     
-                    // Slider to control the intensity of the cataracts effect
+                    // Slider controls blur intensity
                     Slider(value: $blurAmount, in: 0...80) {
                         Text("Intensity")
                     }
@@ -52,6 +52,7 @@ struct MacularDegenerationInteractiveView: View {
                     .background(.ultraThinMaterial)
                     .cornerRadius(8)
                     .frame(maxWidth: 400)
+                    // Optional mask to emphasize central interaction area
                     .mask(
                         RadialGradient(
                             gradient: Gradient(stops: [
@@ -65,17 +66,16 @@ struct MacularDegenerationInteractiveView: View {
                         )
                     )
                     
-                    // Text describing the current intensity of the effect
+                    // Label showing current percentage of effect
                     let percent = Int((blurAmount / 80) * 100)
                     Text("Central vision loss: \(percent)%")
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.85))
-                        .padding(.top, 8)
-                        .padding(.bottom, 8)
+                        .padding(.vertical, 8)
                 }
                 .padding(.bottom, 100)
                 
-                // Back button - placed independently in top-left corner
+                // Back button pinned to top-left corner
                 VStack {
                     HStack {
                         BackToHomeButton()
