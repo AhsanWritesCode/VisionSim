@@ -1,3 +1,4 @@
+// VisionSim4App.swift
 // Main entry point for the app and all window scene registrations.
 
 import SwiftUI
@@ -6,7 +7,7 @@ import SwiftUI
 struct VisionSim4App: App {
     // MARK: - App State
     @StateObject private var appState = AppState()
-    @State private var immersionStyle: ImmersionStyle = .full // kept around in case immersive spaces return later
+    @State private var immersionStyle: ImmersionStyle = .mixed // Changed to .mixed for head-tracked overlays
     
     // MARK: - Constants
     /// Stable identifiers for additional windows. Using an enum avoids stringly-typed IDs.
@@ -23,6 +24,10 @@ struct VisionSim4App: App {
         case cataractsInteractive
         case diabeticRetinopathyInteractive
         case diabeticRetinopathyLive
+        // Head-tracked immersive simulations
+        case glaucomaFullImmersive
+        case glaucomaBottomImmersive
+        case macularDegenerationImmersive
     }
     
     /// Common sizes to keep window layouts consistent across scenes.
@@ -45,6 +50,9 @@ struct VisionSim4App: App {
                 
                 ModelSelectionView()
                     .tabItem { Label("Model", systemImage: "cube.fill") }
+                
+                HeadTrackedSimulatorView()
+                    .tabItem { Label("Head-Tracked", systemImage: "visionpro") }
                 
                 CreditsView()
                     .tabItem { Label("Credits", systemImage: "person.3.fill") }
@@ -116,6 +124,24 @@ struct VisionSim4App: App {
         .defaultSize(width: WinSize.large.width, height: WinSize.large.height)
         .windowStyle(.plain)
         
+        // MARK: - Head-Tracked Immersive Simulators
+        // These use RealityKit to attach vision blockers directly to the user's head position
+        
+        ImmersiveSpace(id: SceneID.glaucomaFullImmersive.rawValue) {
+            GlaucomaFullImmersiveView()
+        }
+        .immersionStyle(selection: $immersionStyle, in: .mixed)
+        
+        ImmersiveSpace(id: SceneID.glaucomaBottomImmersive.rawValue) {
+            GlaucomaBottomImmersiveView()
+        }
+        .immersionStyle(selection: $immersionStyle, in: .mixed)
+        
+        ImmersiveSpace(id: SceneID.macularDegenerationImmersive.rawValue) {
+            MacularDegenerationImmersiveView()
+        }
+        .immersionStyle(selection: $immersionStyle, in: .mixed)
+        
         // MARK: - Models
         // Loads a specific .usdz eye model if provided; falls back to a default.
         WindowGroup(id: "Eye", for: String.self) { $modelName in
@@ -126,7 +152,7 @@ struct VisionSim4App: App {
     
     // MARK: - Helpers
     /// Returns the correct image set for the given impairment and viewing mode.
-    /// Keeps asset naming in one place so the rest of the app doesn’t care about filenames.
+    /// Keeps asset naming in one place so the rest of the app doesn't care about filenames.
     private func imageSet(for impairment: VisionImpairment, impaired: Bool) -> [String] {
         switch impairment {
         case .macularDegeneration:

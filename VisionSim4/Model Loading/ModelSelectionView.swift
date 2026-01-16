@@ -17,7 +17,8 @@ struct ModelSelectionView: View {
         .init(title: "Glaucoma Eye",             subtitle: "Peripheral vision loss",       modelName: "EyeModel_Glaucoma"),
         .init(title: "Cataracts Eye",            subtitle: "Clouded, hazy lens",           modelName: "EyeModel_Cataracts"),
         .init(title: "Macular Degeneration Eye", subtitle: "Central blur & distortion",    modelName: "EyeModel_MacularDegeneration"),
-        .init(title: "Diabetic Retinopathy Eye", subtitle: "Floaters & patchy vision",     modelName: "EyeModel_DiabeticRetinopathy")
+        .init(title: "Diabetic Retinopathy Eye", subtitle: "Floaters & patchy vision",     modelName: "EyeModel_DiabeticRetinopathy"),
+        .init(title: "Book", subtitle: "Book test",     modelName: "book_scaled")
     ]
     
     // Adaptive grid: 2–3 cards depending on window width
