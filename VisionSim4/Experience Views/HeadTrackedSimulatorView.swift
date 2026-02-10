@@ -3,6 +3,7 @@
 
 import SwiftUI
 import RealityKit
+import RealityKitContent
 
 // MARK: - Head-Tracked Simulator Control View
 /// This view provides the UI to launch the different head-tracked immersive simulations
@@ -123,39 +124,106 @@ struct HeadTrackedSimulatorView: View {
 // MARK: - Immersive View Implementations
 
 struct GlaucomaFullImmersiveView: View {
+    @State private var severity: Float = 0.5 // 0 = no glaucoma, 1 = severe
+    @Environment(\.openWindow) private var openWindow
+    
     var body: some View {
-        RealityView { content in
+        RealityView { content, attachments in
             let headAnchor = AnchorEntity(.head)
-            let overlayEntity = createPeripheralBlockers()
+            
+            let overlayEntity = createPeripheralBlockers(severity: severity)
+            overlayEntity.name = "glaucomaBlockers"
             headAnchor.addChild(overlayEntity)
+            
+            // Add the HUD attachment
+            if let hudAttachment = attachments.entity(for: "severityHUD") {
+                hudAttachment.position = SIMD3<Float>(0, -0.3, -0.8) // Below center, in front
+                headAnchor.addChild(hudAttachment)
+            }
+            
             content.add(headAnchor)
+        } update: { content, attachments in
+            // Update the blockers when severity changes
+            if let headAnchor = content.entities.first,
+               let oldBlockers = headAnchor.children.first(where: { $0.name == "glaucomaBlockers" }) {
+                oldBlockers.removeFromParent()
+                let newBlockers = createPeripheralBlockers(severity: severity)
+                newBlockers.name = "glaucomaBlockers"
+                headAnchor.addChild(newBlockers)
+            }
+        } attachments: {
+            Attachment(id: "severityHUD") {
+                VStack(spacing: 15) {
+                    Text("Glaucoma Severity")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    HStack {
+                        Text("Mild")
+                            .font(.caption)
+                        
+                        Slider(value: $severity, in: 0...1)
+                            .frame(width: 250)
+                        
+                        Text("Severe")
+                            .font(.caption)
+                    }
+                    
+                    Text("\(Int(severity * 100))%")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .monospacedDigit()
+                    
+                    Button(action: {
+                        openWindow(id: "Eye", value: "book_scaled")
+                    }) {
+                        Label(
+                            "Show Reading Example",
+                            systemImage: "book.pages"
+                        )
+                        .font(.headline)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.blue)
+                }
+                .padding(25)
+                .glassBackgroundEffect()
+            }
         }
     }
     
-    func createPeripheralBlockers() -> Entity {
+    func createPeripheralBlockers(severity: Float) -> Entity {
         let entity = Entity()
         
         let distance: Float = 0.5
-        let planeSize: Float = 0.8
+        let baseSize: Float = 0.8
+        
+        // Scale the blocker size based on severity
+        let planeSize = 0.1 + (baseSize - 0.1) * severity
+        
+        // Adjust position based on severity
+        let offset = 0.9 - (0.3 * severity)
         
         // TOP blocker
         let topMesh = MeshResource.generatePlane(width: 3.0, height: planeSize)
-        let topEntity = createBlocker(mesh: topMesh, position: SIMD3<Float>(0, 0.6, -distance))
+        let topEntity = createBlocker(mesh: topMesh, position: SIMD3<Float>(0, offset, -distance))
         entity.addChild(topEntity)
         
         // BOTTOM blocker
         let bottomMesh = MeshResource.generatePlane(width: 3.0, height: planeSize)
-        let bottomEntity = createBlocker(mesh: bottomMesh, position: SIMD3<Float>(0, -0.6, -distance))
+        let bottomEntity = createBlocker(mesh: bottomMesh, position: SIMD3<Float>(0, -offset, -distance))
         entity.addChild(bottomEntity)
         
         // LEFT blocker
         let leftMesh = MeshResource.generatePlane(width: planeSize, height: 2.0)
-        let leftEntity = createBlocker(mesh: leftMesh, position: SIMD3<Float>(-0.6, 0, -distance))
+        let leftEntity = createBlocker(mesh: leftMesh, position: SIMD3<Float>(-offset, 0, -distance))
         entity.addChild(leftEntity)
         
         // RIGHT blocker
         let rightMesh = MeshResource.generatePlane(width: planeSize, height: 2.0)
-        let rightEntity = createBlocker(mesh: rightMesh, position: SIMD3<Float>(0.6, 0, -distance))
+        let rightEntity = createBlocker(mesh: rightMesh, position: SIMD3<Float>(offset, 0, -distance))
         entity.addChild(rightEntity)
         
         return entity
@@ -225,7 +293,7 @@ struct MacularDegenerationImmersiveView: View {
         let blockerSize: Float = 0.3
         
         // Central blocker for macular degeneration
-        let centralMesh = MeshResource.generatePlane(width: blockerSize, height: blockerSize)
+        let centralMesh = MeshResource.generateSphere(radius: blockerSize / 2)
         let centralEntity = createBlocker(mesh: centralMesh, position: SIMD3<Float>(0, 0, -distance))
         
         entity.addChild(centralEntity)
