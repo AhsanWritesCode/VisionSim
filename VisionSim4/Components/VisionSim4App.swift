@@ -28,6 +28,7 @@ struct VisionSim4App: App {
         case glaucomaFullImmersive
         case glaucomaBottomImmersive
         case macularDegenerationImmersive
+        case cataractsImmersive
     }
     
     /// Common sizes to keep window layouts consistent across scenes.
@@ -139,6 +140,11 @@ struct VisionSim4App: App {
         
         ImmersiveSpace(id: SceneID.macularDegenerationImmersive.rawValue) {
             MacularDegenerationImmersiveView()
+        }
+        .immersionStyle(selection: $immersionStyle, in: .mixed)
+        
+        ImmersiveSpace(id: SceneID.cataractsImmersive.rawValue) {
+            CataractsImmersiveView()
         }
         .immersionStyle(selection: $immersionStyle, in: .mixed)
         
