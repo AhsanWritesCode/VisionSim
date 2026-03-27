@@ -136,6 +136,34 @@ struct HeadTrackedSimulatorView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint((isImmersive && currentSimulation == "cataracts") ? .red : .purple)
+                
+                // Diabetic Retinopathy
+                Button(action: {
+                    Task {
+                        if isImmersive && currentSimulation == "diabeticRetinopathy" {
+                            await dismissImmersiveSpace()
+                            isImmersive = false
+                            currentSimulation = nil
+                        } else {
+                            if isImmersive {
+                                await dismissImmersiveSpace()
+                            }
+                            await openImmersiveSpace(id: "diabeticRetinopathyImmersive")
+                            isImmersive = true
+                            currentSimulation = "diabeticRetinopathy"
+                        }
+                    }
+                }) {
+                    Label(
+                        (isImmersive && currentSimulation == "diabeticRetinopathy") ? "Exit Simulation" : "Diabetic Retinopathy: Spots & Floaters",
+                        systemImage: (isImmersive && currentSimulation == "diabeticRetinopathy") ? "xmark.circle" : "circle.hexagongrid.fill"
+                    )
+                    .font(.title2)
+                    .padding()
+                    .frame(minWidth: 350)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint((isImmersive && currentSimulation == "diabeticRetinopathy") ? .red : .pink)
             }
             
             if isImmersive {
@@ -607,6 +635,316 @@ struct CataractsImmersiveView: View {
             
             entity.addChild(spotEntity)
         }
+    }
+}
+
+struct DiabeticRetinopathyImmersiveView: View {
+    @State private var severity: Float = 0.5 // 0 = mild, 1 = severe
+    
+    var body: some View {
+        RealityView { content, attachments in
+            let headAnchor = AnchorEntity(.head)
+            
+            let overlayEntity = createRetinopathyEffects(severity: severity)
+            overlayEntity.name = "retinopathyEffects"
+            headAnchor.addChild(overlayEntity)
+            
+            // Add the HUD attachment
+            if let hudAttachment = attachments.entity(for: "severityHUD") {
+                hudAttachment.position = SIMD3<Float>(0, -0.35, -0.8)
+                headAnchor.addChild(hudAttachment)
+            }
+            
+            content.add(headAnchor)
+            
+            // Start animations
+            Task {
+                await animateFloatersAndSpots(in: headAnchor)
+            }
+        } update: { content, attachments in
+            // Update the effects when severity changes
+            if let headAnchor = content.entities.first,
+               let oldEffects = headAnchor.children.first(where: { $0.name == "retinopathyEffects" }) {
+                oldEffects.removeFromParent()
+                let newEffects = createRetinopathyEffects(severity: severity)
+                newEffects.name = "retinopathyEffects"
+                headAnchor.addChild(newEffects)
+                
+                // Restart animations
+                Task {
+                    await animateFloatersAndSpots(in: headAnchor)
+                }
+            }
+        } attachments: {
+            Attachment(id: "severityHUD") {
+                VStack(spacing: 15) {
+                    Text("Diabetic Retinopathy Severity")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    HStack {
+                        Text("Mild")
+                            .font(.caption)
+                        
+                        Slider(value: $severity, in: 0...1)
+                            .frame(width: 250)
+                        
+                        Text("Severe")
+                            .font(.caption)
+                    }
+                    
+                    Text("\(Int(severity * 100))%")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .monospacedDigit()
+                    
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Effects include:")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                        Text("• Dark spots (microaneurysms)")
+                            .font(.caption2)
+                        Text("• Floaters (blood leakage)")
+                            .font(.caption2)
+                        Text("• Blurred patches")
+                            .font(.caption2)
+                    }
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: 280)
+                }
+                .padding(25)
+                .glassBackgroundEffect()
+            }
+        }
+    }
+    
+    func animateFloatersAndSpots(in headAnchor: Entity) async {
+        // Continuously animate floaters and microaneurysms
+        while true {
+            guard let effectsEntity = headAnchor.children.first(where: { $0.name == "retinopathyEffects" }) else {
+                break
+            }
+            
+            // Animate all floaters (entities with "floater" name)
+            for child in effectsEntity.children where child.name == "floater" {
+                let duration: TimeInterval = Double.random(in: 3...6)
+                let moveX = Float.random(in: -0.08...0.08)
+                let moveY = Float.random(in: -0.06...0.06)
+                
+                let originalPosition = child.position
+                let targetPosition = SIMD3<Float>(
+                    originalPosition.x + moveX,
+                    originalPosition.y + moveY,
+                    originalPosition.z
+                )
+                
+                var transform = child.transform
+                transform.translation = targetPosition
+                
+                child.move(to: transform, relativeTo: child.parent, duration: duration, timingFunction: .easeInOut)
+            }
+            
+            // Animate microaneurysm spots (slight pulsing and drift)
+            for child in effectsEntity.children where child.name == "microaneurysm" {
+                let duration: TimeInterval = Double.random(in: 4...8)
+                let moveX = Float.random(in: -0.02...0.02)
+                let moveY = Float.random(in: -0.02...0.02)
+                
+                let originalPosition = child.position
+                let targetPosition = SIMD3<Float>(
+                    originalPosition.x + moveX,
+                    originalPosition.y + moveY,
+                    originalPosition.z
+                )
+                
+                var transform = child.transform
+                transform.translation = targetPosition
+                
+                // Slight pulsing scale
+                let scaleVariation = Float.random(in: 0.9...1.1)
+                transform.scale = SIMD3<Float>(repeating: scaleVariation)
+                
+                child.move(to: transform, relativeTo: child.parent, duration: duration, timingFunction: .easeInOut)
+            }
+            
+            // Wait before next animation cycle
+            try? await Task.sleep(for: .seconds(3))
+        }
+    }
+    
+    func createRetinopathyEffects(severity: Float) -> Entity {
+        let entity = Entity()
+        
+        let distance: Float = 0.35
+        
+        // Add dark spots (microaneurysms) - small dark dots scattered in vision
+        addMicroaneurysms(to: entity, severity: severity, distance: distance)
+        
+        // Add floaters (wispy, translucent shapes) - blood and debris
+        addFloaters(to: entity, severity: severity, distance: distance)
+        
+        // Add blurred patches (hemorrhages) - larger dark/reddish areas
+        if severity > 0.3 {
+            addHemorrhages(to: entity, severity: severity, distance: distance)
+        }
+        
+        // Add overall vision haze for severe cases
+        if severity > 0.6 {
+            addVisionHaze(to: entity, severity: severity, distance: distance)
+        }
+        
+        return entity
+    }
+    
+    func addMicroaneurysms(to entity: Entity, severity: Float, distance: Float) {
+        // Small dark spots scattered throughout the field of view
+        let spotCount = Int(3 + severity * 25) // 3-28 spots
+        
+        for _ in 0..<spotCount {
+            // Random position across the field of view
+            let x = Float.random(in: -0.6...0.6)
+            let y = Float.random(in: -0.4...0.4)
+            
+            let spotSize: Float = 0.003 + Float.random(in: 0...0.008)
+            let spotMesh = MeshResource.generateSphere(radius: spotSize)
+            
+            var spotMaterial = UnlitMaterial()
+            spotMaterial.blending = .transparent(opacity: 1.0)
+            
+            // Dark reddish-brown color for microaneurysms
+            let spotOpacity = 0.5 + severity * 0.4
+            let spotColor = UIColor(
+                red: CGFloat(0.2 + Float.random(in: 0...0.1)),
+                green: 0.05,
+                blue: 0.05,
+                alpha: CGFloat(spotOpacity)
+            )
+            spotMaterial.color = .init(tint: spotColor, texture: nil)
+            
+            let spotEntity = ModelEntity(mesh: spotMesh, materials: [spotMaterial])
+            spotEntity.position = SIMD3<Float>(x, y, -distance)
+            spotEntity.name = "microaneurysm"
+            
+            entity.addChild(spotEntity)
+        }
+    }
+    
+    func addFloaters(to entity: Entity, severity: Float, distance: Float) {
+        // Wispy, translucent shapes that simulate debris and blood cells
+        let floaterCount = Int(2 + severity * 8) // 2-10 floaters
+        
+        for i in 0..<floaterCount {
+            // Create irregular floater shapes using multiple small spheres
+            let floaterGroup = Entity()
+            floaterGroup.name = "floater"
+            
+            let centerX = Float.random(in: -0.5...0.5)
+            let centerY = Float.random(in: -0.3...0.3)
+            
+            // Each floater is made of 3-6 connected small spheres
+            let particleCount = Int.random(in: 3...6)
+            
+            for j in 0..<particleCount {
+                let offsetX = Float.random(in: -0.015...0.015)
+                let offsetY = Float.random(in: -0.015...0.015)
+                
+                let particleSize: Float = 0.004 + Float.random(in: 0...0.006)
+                let particleMesh = MeshResource.generateSphere(radius: particleSize)
+                
+                var particleMaterial = UnlitMaterial()
+                particleMaterial.blending = .transparent(opacity: 1.0)
+                
+                // Semi-transparent grayish color
+                let particleOpacity = 0.15 + severity * 0.25
+                let particleColor = UIColor(
+                    red: 0.3,
+                    green: 0.3,
+                    blue: 0.3,
+                    alpha: CGFloat(particleOpacity)
+                )
+                particleMaterial.color = .init(tint: particleColor, texture: nil)
+                
+                let particleEntity = ModelEntity(mesh: particleMesh, materials: [particleMaterial])
+                particleEntity.position = SIMD3<Float>(offsetX, offsetY, 0)
+                
+                floaterGroup.addChild(particleEntity)
+            }
+            
+            floaterGroup.position = SIMD3<Float>(centerX, centerY, -distance + 0.05)
+            entity.addChild(floaterGroup)
+        }
+    }
+    
+    func addHemorrhages(to entity: Entity, severity: Float, distance: Float) {
+        // Larger blurred patches representing blood hemorrhages
+        let hemorrhageCount = Int((severity - 0.3) * 8) // 0-5 patches
+        
+        for _ in 0..<hemorrhageCount {
+            let x = Float.random(in: -0.4...0.4)
+            let y = Float.random(in: -0.3...0.3)
+            
+            // Create irregular shapes by grouping multiple overlapping spheres
+            let patchGroup = Entity()
+            
+            let mainSize: Float = 0.04 + Float.random(in: 0...0.03)
+            
+            // Main hemorrhage blob
+            for _ in 0..<Int.random(in: 3...6) {
+                let offsetX = Float.random(in: -mainSize/2...mainSize/2)
+                let offsetY = Float.random(in: -mainSize/2...mainSize/2)
+                
+                let blobSize = mainSize * Float.random(in: 0.6...1.0)
+                let blobMesh = MeshResource.generateSphere(radius: blobSize)
+                
+                var blobMaterial = UnlitMaterial()
+                blobMaterial.blending = .transparent(opacity: 1.0)
+                
+                // Dark reddish color for hemorrhages
+                let blobOpacity = 0.3 + (severity - 0.3) * 0.5
+                let blobColor = UIColor(
+                    red: CGFloat(0.4 + Float.random(in: 0...0.1)),
+                    green: 0.05,
+                    blue: 0.05,
+                    alpha: CGFloat(blobOpacity)
+                )
+                blobMaterial.color = .init(tint: blobColor, texture: nil)
+                
+                let blobEntity = ModelEntity(mesh: blobMesh, materials: [blobMaterial])
+                blobEntity.position = SIMD3<Float>(offsetX, offsetY, 0)
+                
+                patchGroup.addChild(blobEntity)
+            }
+            
+            patchGroup.position = SIMD3<Float>(x, y, -distance + 0.02)
+            entity.addChild(patchGroup)
+        }
+    }
+    
+    func addVisionHaze(to entity: Entity, severity: Float, distance: Float) {
+        // Overall haze to simulate advanced diabetic retinopathy
+        let planeSize: Float = 2.5
+        let mesh = MeshResource.generatePlane(width: planeSize, height: planeSize)
+        
+        var material = UnlitMaterial()
+        material.blending = .transparent(opacity: 1.0)
+        
+        // Calculate haze opacity based on severity above 0.6
+        let hazeOpacity = (severity - 0.6) * 0.4 // Max 0.16 at severity 1.0
+        
+        // Slight reddish haze
+        let hazeColor = UIColor(
+            red: 0.6,
+            green: 0.4,
+            blue: 0.4,
+            alpha: CGFloat(hazeOpacity)
+        )
+        
+        material.color = .init(tint: hazeColor, texture: nil)
+        
+        let hazeEntity = ModelEntity(mesh: mesh, materials: [material])
+        hazeEntity.position = SIMD3<Float>(0, 0, -distance - 0.1)
+        
+        entity.addChild(hazeEntity)
     }
 }
 
